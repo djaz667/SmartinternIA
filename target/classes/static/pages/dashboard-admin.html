@@ -25,7 +25,7 @@
         .users-table tr:hover {
             background: #f5f7fa;
         }
-        .role-select {
+        .role-select, .filter-select {
             padding: 6px 10px;
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -54,9 +54,93 @@
         .btn-create {
             background: #28a745;
             color: #fff;
-            margin-bottom: 16px;
         }
         .btn-create:hover { background: #218838; }
+        .btn-approve {
+            background: #28a745;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-approve:hover { background: #218838; }
+        .btn-reject {
+            background: #dc3545;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-reject:hover { background: #c82333; }
+        .btn-suspend {
+            background: #6c757d;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-suspend:hover { background: #5a6268; }
+        .btn-reactivate {
+            background: #17a2b8;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-reactivate:hover { background: #138496; }
+        .actions-cell { display: flex; gap: 6px; align-items: center; }
+        /* Pending badge */
+        .pending-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #dc3545;
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+        .pending-badge.hidden { display: none; }
+        /* Filters bar */
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .filters-bar label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+        }
+        /* Card header */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .card-title-row {
+            display: flex;
+            align-items: center;
+        }
         /* Modal */
         .modal-overlay {
             display: none;
@@ -106,29 +190,6 @@
             font-weight: 600;
         }
         .btn-submit:hover { background: #1557b0; }
-        .btn-approve {
-            background: #28a745;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-approve:hover { background: #218838; }
-        .btn-reject {
-            background: #dc3545;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-reject:hover { background: #c82333; }
-        .actions-cell { display: flex; gap: 6px; }
         .loading { text-align: center; padding: 20px; color: #888; }
     </style>
 </head>
@@ -147,9 +208,32 @@
         <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
 
         <div class="dashboard-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3>Gestion des utilisateurs</h3>
+            <div class="card-header">
+                <div class="card-title-row">
+                    <h3>Gestion des utilisateurs</h3>
+                    <span class="pending-badge hidden" id="pendingBadge">0</span>
+                </div>
                 <button class="btn-action btn-create" onclick="openCreateModal()">+ Créer encadrant académique</button>
+            </div>
+
+            <div class="filters-bar">
+                <label for="filterStatut">Statut :</label>
+                <select class="filter-select" id="filterStatut" onchange="applyFilters()">
+                    <option value="">Tous</option>
+                    <option value="EN_ATTENTE">En attente</option>
+                    <option value="APPROUVE">Approuvé</option>
+                    <option value="REFUSE">Refusé</option>
+                    <option value="SUSPENDU">Suspendu</option>
+                </select>
+                <label for="filterRole">Rôle :</label>
+                <select class="filter-select" id="filterRole" onchange="applyFilters()">
+                    <option value="">Tous</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="ETUDIANT">Étudiant</option>
+                    <option value="ENTREPRISE">Entreprise</option>
+                    <option value="ENCADRANT_ACADEMIQUE">Encadrant Académique</option>
+                    <option value="ENCADRANT_ENTREPRISE">Encadrant Entreprise</option>
+                </select>
             </div>
 
             <div id="usersMessage" class="message hidden"></div>
@@ -221,20 +305,46 @@
                 document.getElementById('userName').textContent = user.email;
                 document.getElementById('userEmail').textContent = user.email;
             }
+            loadPendingCount();
             loadUsers();
         });
+
+        async function loadPendingCount() {
+            try {
+                var data = await apiFetch('/users/pending/count');
+                var badge = document.getElementById('pendingBadge');
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            } catch (err) { /* ignore */ }
+        }
 
         async function loadUsers() {
             var loading = document.getElementById('usersLoading');
             var table = document.getElementById('usersTable');
+            var statut = document.getElementById('filterStatut').value;
+            var role = document.getElementById('filterRole').value;
+
+            var params = [];
+            if (statut) params.push('statut=' + statut);
+            if (role) params.push('role=' + role);
+            var query = params.length ? '?' + params.join('&') : '';
+
             try {
-                var users = await apiFetch('/users');
+                var users = await apiFetch('/users' + query);
                 loading.style.display = 'none';
                 table.style.display = 'table';
                 renderUsers(users);
             } catch (err) {
                 loading.textContent = 'Erreur lors du chargement des utilisateurs.';
             }
+        }
+
+        function applyFilters() {
+            loadUsers();
         }
 
         function renderUsers(users) {
@@ -263,7 +373,7 @@
                         select.appendChild(opt);
                     });
                     select.addEventListener('change', function () {
-                        changeRole(u.id, this.value, this);
+                        changeRole(u.id, this.value);
                     });
                     tdRole.appendChild(select);
                 }
@@ -287,25 +397,34 @@
                 tdNom.textContent = u.nom || '-';
                 tr.appendChild(tdNom);
 
-                // Actions (Approuver / Refuser pour EN_ATTENTE)
+                // Actions
                 var tdActions = document.createElement('td');
+                tdActions.className = 'actions-cell';
+
                 if (u.statutCompte === 'EN_ATTENTE') {
-                    tdActions.className = 'actions-cell';
                     var btnApprove = document.createElement('button');
                     btnApprove.className = 'btn-approve';
                     btnApprove.textContent = 'Approuver';
-                    btnApprove.addEventListener('click', function () {
-                        updateStatut(u.id, 'APPROUVE');
-                    });
+                    btnApprove.addEventListener('click', function () { updateStatut(u.id, 'APPROUVE'); });
                     tdActions.appendChild(btnApprove);
 
                     var btnReject = document.createElement('button');
                     btnReject.className = 'btn-reject';
                     btnReject.textContent = 'Refuser';
-                    btnReject.addEventListener('click', function () {
-                        updateStatut(u.id, 'REFUSE');
-                    });
+                    btnReject.addEventListener('click', function () { updateStatut(u.id, 'REFUSE'); });
                     tdActions.appendChild(btnReject);
+                } else if (u.statutCompte === 'APPROUVE' && u.role !== 'ADMIN') {
+                    var btnSuspend = document.createElement('button');
+                    btnSuspend.className = 'btn-suspend';
+                    btnSuspend.textContent = 'Suspendre';
+                    btnSuspend.addEventListener('click', function () { updateStatut(u.id, 'SUSPENDU'); });
+                    tdActions.appendChild(btnSuspend);
+                } else if (u.statutCompte === 'SUSPENDU') {
+                    var btnReactivate = document.createElement('button');
+                    btnReactivate.className = 'btn-reactivate';
+                    btnReactivate.textContent = 'Réactiver';
+                    btnReactivate.addEventListener('click', function () { updateStatut(u.id, 'APPROUVE'); });
+                    tdActions.appendChild(btnReactivate);
                 } else {
                     tdActions.textContent = '-';
                 }
@@ -321,14 +440,20 @@
                     method: 'PUT',
                     body: JSON.stringify({ statut: newStatut })
                 });
-                showUsersMessage(newStatut === 'APPROUVE' ? 'Compte approuvé.' : 'Compte refusé.', 'success');
+                var messages = {
+                    'APPROUVE': 'Compte approuvé.',
+                    'REFUSE': 'Compte refusé.',
+                    'SUSPENDU': 'Compte suspendu.'
+                };
+                showUsersMessage(messages[newStatut] || 'Statut mis à jour.', 'success');
+                loadPendingCount();
                 loadUsers();
             } catch (err) {
                 showUsersMessage(err.message || 'Erreur lors de la mise à jour du statut.', 'error');
             }
         }
 
-        async function changeRole(userId, newRole, selectEl) {
+        async function changeRole(userId, newRole) {
             try {
                 await apiFetch('/users/' + userId + '/role', {
                     method: 'PUT',
@@ -337,7 +462,7 @@
                 showUsersMessage('Rôle mis à jour avec succès.', 'success');
             } catch (err) {
                 showUsersMessage(err.message || 'Erreur lors de la mise à jour du rôle.', 'error');
-                loadUsers(); // Reload to reset dropdown
+                loadUsers();
             }
         }
 
@@ -371,6 +496,7 @@
                 });
                 closeCreateModal();
                 showUsersMessage('Encadrant académique créé avec succès.', 'success');
+                loadPendingCount();
                 loadUsers();
             } catch (err) {
                 msgDiv.textContent = err.message || 'Erreur lors de la création.';

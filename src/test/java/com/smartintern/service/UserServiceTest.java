@@ -195,6 +195,49 @@ class UserServiceTest {
     }
 
     @Test
+    void updateStatut_suspendApprovedUser_updatesStatut() {
+        testUser.setStatutCompte(StatutCompte.APPROUVE);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
+
+        UserResponse response = userService.updateStatut(1L, StatutCompte.SUSPENDU);
+
+        assertThat(response.getStatutCompte()).isEqualTo("SUSPENDU");
+    }
+
+    @Test
+    void updateStatut_reactivateSuspendedUser_updatesStatut() {
+        testUser.setStatutCompte(StatutCompte.SUSPENDU);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
+
+        UserResponse response = userService.updateStatut(1L, StatutCompte.APPROUVE);
+
+        assertThat(response.getStatutCompte()).isEqualTo("APPROUVE");
+    }
+
+    @Test
+    void updateStatut_toEnAttente_throwsIllegalArgument() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+
+        assertThatThrownBy(() -> userService.updateStatut(1L, StatutCompte.EN_ATTENTE))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Transition vers EN_ATTENTE non autorisée");
+    }
+
+    @Test
+    void updateStatut_refuseToApprouve_throwsIllegalArgument() {
+        testUser.setStatutCompte(StatutCompte.REFUSE);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+
+        assertThatThrownBy(() -> userService.updateStatut(1L, StatutCompte.APPROUVE))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Un compte refusé ne peut pas être approuvé directement");
+    }
+
+    @Test
     void updateStatut_userNotFound_throws404() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -203,25 +246,61 @@ class UserServiceTest {
                 .hasMessage("Utilisateur non trouvé");
     }
 
-    // === getAllUsers tests ===
+    // === getUsers (with filters) tests ===
 
     @Test
-    void getAllUsers_returnsList() {
-        User user2 = User.builder()
-                .id(2L)
-                .email("admin@test.com")
-                .role(Role.ADMIN)
-                .statutCompte(StatutCompte.APPROUVE)
-                .dateCreation(LocalDateTime.now())
-                .build();
-
-        when(userRepository.findAll()).thenReturn(List.of(testUser, user2));
+    void getUsers_noFilters_returnsAll() {
+        when(userRepository.findAll()).thenReturn(List.of(testUser));
         when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
 
-        List<UserResponse> result = userService.getAllUsers();
+        List<UserResponse> result = userService.getUsers(null, null);
 
-        assertThat(result).hasSize(2);
-        assertThat(result.get(0).getEmail()).isEqualTo("user@test.com");
-        assertThat(result.get(1).getEmail()).isEqualTo("admin@test.com");
+        assertThat(result).hasSize(1);
+        verify(userRepository).findAll();
+    }
+
+    @Test
+    void getUsers_filterByStatut_callsCorrectRepo() {
+        when(userRepository.findByStatutCompte(StatutCompte.EN_ATTENTE)).thenReturn(List.of(testUser));
+        when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
+
+        List<UserResponse> result = userService.getUsers(StatutCompte.EN_ATTENTE, null);
+
+        assertThat(result).hasSize(1);
+        verify(userRepository).findByStatutCompte(StatutCompte.EN_ATTENTE);
+    }
+
+    @Test
+    void getUsers_filterByRole_callsCorrectRepo() {
+        when(userRepository.findByRole(Role.ETUDIANT)).thenReturn(List.of(testUser));
+        when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
+
+        List<UserResponse> result = userService.getUsers(null, Role.ETUDIANT);
+
+        assertThat(result).hasSize(1);
+        verify(userRepository).findByRole(Role.ETUDIANT);
+    }
+
+    @Test
+    void getUsers_filterByBoth_callsCorrectRepo() {
+        when(userRepository.findByRoleAndStatutCompte(Role.ETUDIANT, StatutCompte.EN_ATTENTE))
+                .thenReturn(List.of(testUser));
+        when(etudiantRepository.findByUserId(1L)).thenReturn(Optional.empty());
+
+        List<UserResponse> result = userService.getUsers(StatutCompte.EN_ATTENTE, Role.ETUDIANT);
+
+        assertThat(result).hasSize(1);
+        verify(userRepository).findByRoleAndStatutCompte(Role.ETUDIANT, StatutCompte.EN_ATTENTE);
+    }
+
+    // === countPendingUsers tests ===
+
+    @Test
+    void countPendingUsers_returnsCount() {
+        when(userRepository.countByStatutCompte(StatutCompte.EN_ATTENTE)).thenReturn(5L);
+
+        long count = userService.countPendingUsers();
+
+        assertThat(count).isEqualTo(5L);
     }
 }

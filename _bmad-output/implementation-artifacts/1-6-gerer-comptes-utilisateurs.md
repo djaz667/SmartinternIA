@@ -1,6 +1,6 @@
 # Story 1.6: Gérer les comptes utilisateurs (AD-02)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -20,32 +20,32 @@ so that seuls les utilisateurs légitimes accèdent à la plateforme.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 : Implémenter UserService.updateStatut() (AC: 1, 3, 4, 5)
-  - [ ] Charger user par id (sinon 404)
-  - [ ] Valider la transition de statut (pas de transition vers EN_ATTENTE)
-  - [ ] Mettre à jour statutCompte
-  - [ ] Sauvegarder et retourner UserResponse
-- [ ] Task 2 : Implémenter UserService.getUsersByFilters() (AC: 2, 6)
-  - [ ] GET /api/users?statut=EN_ATTENTE&role=ETUDIANT
-  - [ ] Filtrage par statut et/ou rôle (paramètres optionnels)
-  - [ ] Retourner List<UserResponse>
-- [ ] Task 3 : Implémenter UserService.countPendingUsers() (AC: 7)
-  - [ ] Compter les users avec statutCompte = EN_ATTENTE
-  - [ ] GET /api/users/pending/count → retourne {count: N}
-- [ ] Task 4 : Ajouter les endpoints dans UserController (AC: 1, 6, 7)
-  - [ ] PUT `/api/users/{id}/statut` → updateStatut() [@PreAuthorize("hasRole('ADMIN')")]
-  - [ ] GET `/api/users` avec @RequestParam statut, role → getUsersByFilters()
-  - [ ] GET `/api/users/pending/count` → countPendingUsers()
-- [ ] Task 5 : Ajouter à UserRepository (AC: 2, 6, 7)
-  - [ ] `findByStatutCompte(StatutCompte statut)` : List<User>
-  - [ ] `findByRoleAndStatutCompte(Role role, StatutCompte statut)` : List<User>
-  - [ ] `countByStatutCompte(StatutCompte statut)` : Long
-- [ ] Task 6 : Interface admin — gestion des comptes (AC: 2, 6, 7)
-  - [ ] Section "Comptes en attente" dans dashboard-admin.html avec badge compteur
-  - [ ] Tableau des comptes en attente avec boutons "Approuver" / "Refuser"
-  - [ ] Filtres dropdown : par statut, par rôle
-  - [ ] Bouton "Suspendre" sur les comptes approuvés
-  - [ ] Feedback visuel après chaque action (succès/erreur)
+- [x] Task 1 : Implémenter UserService.updateStatut() (AC: 1, 3, 4, 5)
+  - [x] Charger user par id (sinon 404)
+  - [x] Valider la transition de statut (pas de transition vers EN_ATTENTE)
+  - [x] Mettre à jour statutCompte
+  - [x] Sauvegarder et retourner UserResponse
+- [x] Task 2 : Implémenter UserService.getUsersByFilters() (AC: 2, 6)
+  - [x] GET /api/users?statut=EN_ATTENTE&role=ETUDIANT
+  - [x] Filtrage par statut et/ou rôle (paramètres optionnels)
+  - [x] Retourner List<UserResponse>
+- [x] Task 3 : Implémenter UserService.countPendingUsers() (AC: 7)
+  - [x] Compter les users avec statutCompte = EN_ATTENTE
+  - [x] GET /api/users/pending/count → retourne {count: N}
+- [x] Task 4 : Ajouter les endpoints dans UserController (AC: 1, 6, 7)
+  - [x] PUT `/api/users/{id}/statut` → updateStatut() [@PreAuthorize("hasRole('ADMIN')")]
+  - [x] GET `/api/users` avec @RequestParam statut, role → getUsersByFilters()
+  - [x] GET `/api/users/pending/count` → countPendingUsers()
+- [x] Task 5 : Ajouter à UserRepository (AC: 2, 6, 7)
+  - [x] `findByStatutCompte(StatutCompte statut)` : List<User>
+  - [x] `findByRoleAndStatutCompte(Role role, StatutCompte statut)` : List<User>
+  - [x] `countByStatutCompte(StatutCompte statut)` : Long
+- [x] Task 6 : Interface admin — gestion des comptes (AC: 2, 6, 7)
+  - [x] Section "Comptes en attente" dans dashboard-admin.html avec badge compteur
+  - [x] Tableau des comptes en attente avec boutons "Approuver" / "Refuser"
+  - [x] Filtres dropdown : par statut, par rôle
+  - [x] Bouton "Suspendre" sur les comptes approuvés
+  - [x] Feedback visuel après chaque action (succès/erreur)
 
 ## Dev Notes
 
@@ -77,6 +77,25 @@ Interdites : retour vers EN_ATTENTE, passage direct REFUSE → APPROUVE (doit re
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Debug Log References
+- Aucun problème rencontré
+
 ### Completion Notes List
+- Task 1: updateStatut() enrichi avec validateStatutTransition() — interdit transition vers EN_ATTENTE, interdit REFUSE→APPROUVE. Transitions autorisées : EN_ATTENTE→APPROUVE, EN_ATTENTE→REFUSE, APPROUVE→SUSPENDU, SUSPENDU→APPROUVE.
+- Task 2: getUsers(statut, role) remplace getAllUsers() — filtrage conditionnel : les deux params, un seul, ou aucun. Utilise findByRoleAndStatutCompte, findByStatutCompte, findByRole, ou findAll selon les cas.
+- Task 3: countPendingUsers() utilise countByStatutCompte(EN_ATTENTE). Endpoint GET /api/users/pending/count retourne {count: N}.
+- Task 4: UserController mis à jour — GET /api/users accepte @RequestParam statut et role optionnels, GET /api/users/pending/count ajouté avec @PreAuthorize ADMIN.
+- Task 5: UserRepository enrichi avec findByStatutCompte, findByRole, findByRoleAndStatutCompte, countByStatutCompte — méthodes JPA dérivées.
+- Task 6: dashboard-admin.html enrichi — badge compteur rouge en-attente, filtres dropdown statut/rôle, bouton "Suspendre" sur comptes APPROUVE (non-admin), bouton "Réactiver" sur comptes SUSPENDU, rafraîchissement compteur après chaque action.
+
 ### File List
+- src/main/java/com/smartintern/repository/UserRepository.java (MODIFIED)
+- src/main/java/com/smartintern/service/UserService.java (MODIFIED)
+- src/main/java/com/smartintern/controller/UserController.java (MODIFIED)
+- src/main/resources/static/pages/dashboard-admin.html (MODIFIED)
+- src/test/java/com/smartintern/service/UserServiceTest.java (MODIFIED)
+
+## Change Log
+- 2026-03-21: Implémentation complète de la story 1-6 Gérer les comptes utilisateurs — validation transitions statut (EN_ATTENTE→APPROUVE/REFUSE, APPROUVE↔SUSPENDU), filtres par statut/rôle sur GET /api/users, compteur EN_ATTENTE avec badge, boutons Suspendre/Réactiver, interface admin enrichie. 56 tests passent (0 régression).

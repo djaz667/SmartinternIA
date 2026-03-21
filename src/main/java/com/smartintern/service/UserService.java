@@ -76,16 +76,39 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 
+        validateStatutTransition(user.getStatutCompte(), newStatut);
+
         user.setStatutCompte(newStatut);
         userRepository.save(user);
 
         return toUserResponse(user);
     }
 
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(this::toUserResponse)
-                .collect(Collectors.toList());
+    private void validateStatutTransition(StatutCompte current, StatutCompte target) {
+        if (target == StatutCompte.EN_ATTENTE) {
+            throw new IllegalArgumentException("Transition vers EN_ATTENTE non autorisée");
+        }
+        if (current == StatutCompte.REFUSE && target == StatutCompte.APPROUVE) {
+            throw new IllegalArgumentException("Un compte refusé ne peut pas être approuvé directement");
+        }
+    }
+
+    public List<UserResponse> getUsers(StatutCompte statut, Role role) {
+        List<User> users;
+        if (statut != null && role != null) {
+            users = userRepository.findByRoleAndStatutCompte(role, statut);
+        } else if (statut != null) {
+            users = userRepository.findByStatutCompte(statut);
+        } else if (role != null) {
+            users = userRepository.findByRole(role);
+        } else {
+            users = userRepository.findAll();
+        }
+        return users.stream().map(this::toUserResponse).collect(Collectors.toList());
+    }
+
+    public long countPendingUsers() {
+        return userRepository.countByStatutCompte(StatutCompte.EN_ATTENTE);
     }
 
     private void createProfileIfNeeded(User user, Role role) {
