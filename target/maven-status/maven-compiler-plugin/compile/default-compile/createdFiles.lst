@@ -4,6 +4,7 @@ com\smartintern\model\Entreprise$EntrepriseBuilder.class
 com\smartintern\repository\FiliereRepository.class
 com\smartintern\SmartInternApplication.class
 com\smartintern\model\Filiere.class
+com\smartintern\service\UserService$1.class
 com\smartintern\controller\FiliereController.class
 com\smartintern\model\Filiere$FiliereBuilder.class
 com\smartintern\exception\DuplicateResourceException.class

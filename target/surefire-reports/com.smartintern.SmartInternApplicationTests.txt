@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.smartintern.SmartInternApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.992 s -- in com.smartintern.SmartInternApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.789 s -- in com.smartintern.SmartInternApplicationTests

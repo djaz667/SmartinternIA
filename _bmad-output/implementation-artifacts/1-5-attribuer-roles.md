@@ -1,6 +1,6 @@
 # Story 1.5: Attribuer des rôles aux utilisateurs (AD-01)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,38 +19,38 @@ so that chaque acteur ait les permissions adaptées à sa fonction.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 : Créer les entités encadrants (AC: 3)
-  - [ ] `model/EncadrantAcademique.java` : id, user (OneToOne), nom, prenom, departement, specialite
-  - [ ] `model/EncadrantEntreprise.java` : id, user (OneToOne), entreprise (ManyToOne), nom, prenom, poste
-  - [ ] `EncadrantAcademiqueRepository.java` : findByUserId(Long userId)
-  - [ ] `EncadrantEntrepriseRepository.java` : findByUserId(Long userId), findByEntrepriseId(Long entrepriseId)
-- [ ] Task 2 : Implémenter UserService.assignRole() (AC: 1, 2, 3, 4)
-  - [ ] Charger le user par id (sinon 404)
-  - [ ] Vérifier que le nouveau rôle != ADMIN (sinon 403)
-  - [ ] Mettre à jour le rôle du user
-  - [ ] Créer le profil associé si nécessaire (Etudiant, Entreprise, EncadrantAcademique, EncadrantEntreprise)
-  - [ ] Sauvegarder et retourner le profil mis à jour
-- [ ] Task 3 : Implémenter UserService.createEncadrantAcademique() (AC: 6)
-  - [ ] Créer un User avec role=ENCADRANT_ACADEMIQUE, statutCompte=APPROUVE
-  - [ ] Créer le EncadrantAcademique associé
-  - [ ] Encoder mot de passe BCrypt
-- [ ] Task 4 : Créer UserController (AC: 1, 6)
-  - [ ] PUT `/api/users/{id}/role` → UserService.assignRole() [@PreAuthorize("hasRole('ADMIN')")]
-  - [ ] POST `/api/users/encadrant-academique` → UserService.createEncadrantAcademique() [@PreAuthorize("hasRole('ADMIN')")]
-  - [ ] GET `/api/users` → UserService.getAllUsers() [@PreAuthorize("hasRole('ADMIN')")]
-- [ ] Task 5 : Créer les DTOs (AC: 1, 6)
-  - [ ] `dto/user/RoleAssignRequest.java` : role (@NotNull)
-  - [ ] `dto/user/UserResponse.java` : id, email, role, statutCompte, dateCreation, nom (résolu selon le rôle)
-  - [ ] `dto/user/CreateEncadrantRequest.java` : email, motDePasse, nom, prenom, departement, specialite
-- [ ] Task 6 : Mettre à jour SecurityConfig (AC: 1)
-  - [ ] `/api/users/**` accessible par ADMIN pour les endpoints de gestion
-  - [ ] Vérifier que les patterns de sécurité sont cohérents
-- [ ] Task 7 : Interface admin — liste des utilisateurs (AC: 5)
-  - [ ] Dans `dashboard-admin.html` : section "Gestion des utilisateurs"
-  - [ ] Charger la liste des users via GET /api/users
-  - [ ] Afficher tableau : email, rôle, statut, date création
-  - [ ] Dropdown pour changer le rôle (appel PUT /api/users/{id}/role)
-  - [ ] Bouton "Créer encadrant académique" ouvrant un formulaire modal
+- [x] Task 1 : Créer les entités encadrants (AC: 3)
+  - [x] `model/EncadrantAcademique.java` : id, user (OneToOne), nom, prenom, departement, specialite
+  - [x] `model/EncadrantEntreprise.java` : id, user (OneToOne), entreprise (ManyToOne), nom, prenom, poste
+  - [x] `EncadrantAcademiqueRepository.java` : findByUserId(Long userId)
+  - [x] `EncadrantEntrepriseRepository.java` : findByUserId(Long userId), findByEntrepriseId(Long entrepriseId)
+- [x] Task 2 : Implémenter UserService.assignRole() (AC: 1, 2, 3, 4)
+  - [x] Charger le user par id (sinon 404)
+  - [x] Vérifier que le nouveau rôle != ADMIN (sinon 403)
+  - [x] Mettre à jour le rôle du user
+  - [x] Créer le profil associé si nécessaire (Etudiant, Entreprise, EncadrantAcademique, EncadrantEntreprise)
+  - [x] Sauvegarder et retourner le profil mis à jour
+- [x] Task 3 : Implémenter UserService.createEncadrantAcademique() (AC: 6)
+  - [x] Créer un User avec role=ENCADRANT_ACADEMIQUE, statutCompte=APPROUVE
+  - [x] Créer le EncadrantAcademique associé
+  - [x] Encoder mot de passe BCrypt
+- [x] Task 4 : Créer UserController (AC: 1, 6)
+  - [x] PUT `/api/users/{id}/role` → UserService.assignRole() [@PreAuthorize("hasRole('ADMIN')")]
+  - [x] POST `/api/users/encadrant-academique` → UserService.createEncadrantAcademique() [@PreAuthorize("hasRole('ADMIN')")]
+  - [x] GET `/api/users` → UserService.getAllUsers() [@PreAuthorize("hasRole('ADMIN')")]
+- [x] Task 5 : Créer les DTOs (AC: 1, 6)
+  - [x] `dto/user/RoleAssignRequest.java` : role (@NotNull)
+  - [x] `dto/user/UserResponse.java` : id, email, role, statutCompte, dateCreation, nom (résolu selon le rôle)
+  - [x] `dto/user/CreateEncadrantRequest.java` : email, motDePasse, nom, prenom, departement, specialite
+- [x] Task 6 : Mettre à jour SecurityConfig (AC: 1)
+  - [x] `/api/users/**` accessible par ADMIN pour les endpoints de gestion
+  - [x] Vérifier que les patterns de sécurité sont cohérents
+- [x] Task 7 : Interface admin — liste des utilisateurs (AC: 5)
+  - [x] Dans `dashboard-admin.html` : section "Gestion des utilisateurs"
+  - [x] Charger la liste des users via GET /api/users
+  - [x] Afficher tableau : email, rôle, statut, date création
+  - [x] Dropdown pour changer le rôle (appel PUT /api/users/{id}/role)
+  - [x] Bouton "Créer encadrant académique" ouvrant un formulaire modal
 
 ## Dev Notes
 
@@ -91,6 +91,35 @@ public enum Role {
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Debug Log References
+- Aucun problème rencontré
+
 ### Completion Notes List
+- Task 1: Entités EncadrantAcademique (encadrants_academiques) et EncadrantEntreprise (encadrants_entreprises) créées avec @OneToOne User, champs métier (departement, specialite pour académique ; entreprise ManyToOne, poste pour entreprise). Repositories avec findByUserId et findByEntrepriseId.
+- Task 2: UserService.assignRole() — charge user par id (404), bloque rôle ADMIN (403), met à jour le rôle, crée le profil associé automatiquement via createProfileIfNeeded() (switch sur les 4 rôles assignables, vérifie qu'un profil n'existe pas déjà avant création).
+- Task 3: UserService.createEncadrantAcademique() — crée User avec role=ENCADRANT_ACADEMIQUE, statutCompte=APPROUVE, mot de passe BCrypt encodé. Crée le EncadrantAcademique associé avec nom, prénom, département, spécialité.
+- Task 4: UserController créé avec 3 endpoints : PUT /{id}/role, POST /encadrant-academique, GET /. Tous protégés par @PreAuthorize("hasRole('ADMIN')").
+- Task 5: 3 DTOs créés — RoleAssignRequest (@NotNull role), UserResponse (id, email, role, statutCompte, dateCreation, nom résolu par rôle), CreateEncadrantRequest (@Email, @NotBlank, @Size).
+- Task 6: SecurityConfig mis à jour avec @EnableMethodSecurity pour activer @PreAuthorize. Handler AccessDeniedException ajouté dans GlobalExceptionHandler (403).
+- Task 7: dashboard-admin.html enrichi — tableau des utilisateurs chargé via GET /api/users, dropdown rôle par utilisateur (sauf ADMIN), badges statut colorés, bouton "Créer encadrant académique" avec formulaire modal complet.
+
 ### File List
+- src/main/java/com/smartintern/model/EncadrantAcademique.java (NEW)
+- src/main/java/com/smartintern/model/EncadrantEntreprise.java (NEW)
+- src/main/java/com/smartintern/repository/EncadrantAcademiqueRepository.java (NEW)
+- src/main/java/com/smartintern/repository/EncadrantEntrepriseRepository.java (NEW)
+- src/main/java/com/smartintern/dto/user/RoleAssignRequest.java (NEW)
+- src/main/java/com/smartintern/dto/user/UserResponse.java (NEW)
+- src/main/java/com/smartintern/dto/user/CreateEncadrantRequest.java (NEW)
+- src/main/java/com/smartintern/service/UserService.java (NEW)
+- src/main/java/com/smartintern/controller/UserController.java (NEW)
+- src/main/java/com/smartintern/config/SecurityConfig.java (MODIFIED)
+- src/main/java/com/smartintern/exception/GlobalExceptionHandler.java (MODIFIED)
+- src/main/resources/static/pages/dashboard-admin.html (MODIFIED)
+- src/main/resources/static/js/auth.js (MODIFIED)
+- src/test/java/com/smartintern/service/UserServiceTest.java (NEW)
+
+## Change Log
+- 2026-03-21: Implémentation complète de la story 1-5 Attribuer des rôles — entités EncadrantAcademique/EncadrantEntreprise, UserService (assignRole, createEncadrantAcademique, getAllUsers), UserController avec @PreAuthorize ADMIN, DTOs, @EnableMethodSecurity, interface admin avec tableau utilisateurs et formulaire modal de création encadrant. 45 tests passent (0 régression).

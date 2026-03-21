@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'ETUDIANT': '/pages/dashboard-etudiant.html',
             'ENTREPRISE': '/pages/dashboard-entreprise.html',
             'ENCADRANT_ACADEMIQUE': '/pages/dashboard-encadrant.html',
-            'ENCADRANT_ENTREPRISE': '/pages/dashboard-encadrant.html'
+            'ENCADRANT_ENTREPRISE': '/pages/dashboard-encadrant-entreprise.html'
         };
 
         var target = dashboards[role] || '/pages/dashboard-etudiant.html';

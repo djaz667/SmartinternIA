@@ -5,6 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - SmartIntern AI</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .users-table th, .users-table td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        .users-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+        .users-table tr:hover {
+            background: #f5f7fa;
+        }
+        .role-select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-APPROUVE { background: #d4edda; color: #155724; }
+        .status-EN_ATTENTE { background: #fff3cd; color: #856404; }
+        .status-REFUSE { background: #f8d7da; color: #721c24; }
+        .status-SUSPENDU { background: #e2e3e5; color: #383d41; }
+        .btn-action {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-create {
+            background: #28a745;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .btn-create:hover { background: #218838; }
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #1a73e8;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .modal-actions .btn { width: auto; }
+        .btn-cancel {
+            background: #6c757d;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-cancel:hover { background: #5a6268; }
+        .btn-submit {
+            background: #1a73e8;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-submit:hover { background: #1557b0; }
+        .btn-approve {
+            background: #28a745;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-approve:hover { background: #218838; }
+        .btn-reject {
+            background: #dc3545;
+            color: #fff;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-reject:hover { background: #c82333; }
+        .actions-cell { display: flex; gap: 6px; }
+        .loading { text-align: center; padding: 20px; color: #888; }
+    </style>
 </head>
 <body>
     <header class="dashboard-header">
@@ -21,14 +147,73 @@
         <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
 
         <div class="dashboard-card">
-            <h3>Gestion des utilisateurs</h3>
-            <p>Contenu à venir dans les prochains sprints.</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Gestion des utilisateurs</h3>
+                <button class="btn-action btn-create" onclick="openCreateModal()">+ Créer encadrant académique</button>
+            </div>
+
+            <div id="usersMessage" class="message hidden"></div>
+            <div id="usersLoading" class="loading">Chargement...</div>
+
+            <table class="users-table" id="usersTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Statut</th>
+                        <th>Date création</th>
+                        <th>Nom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+            </table>
         </div>
     </main>
+
+    <!-- Modal créer encadrant académique -->
+    <div class="modal-overlay" id="createModal">
+        <div class="modal-content">
+            <h3>Créer un encadrant académique</h3>
+            <div id="modalMessage" class="message hidden"></div>
+            <form id="createEncadrantForm">
+                <div class="form-group">
+                    <label for="encEmail">Email</label>
+                    <input type="email" id="encEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="encPassword">Mot de passe</label>
+                    <input type="password" id="encPassword" minlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label for="encNom">Nom</label>
+                    <input type="text" id="encNom" required>
+                </div>
+                <div class="form-group">
+                    <label for="encPrenom">Prénom</label>
+                    <input type="text" id="encPrenom" required>
+                </div>
+                <div class="form-group">
+                    <label for="encDepartement">Département</label>
+                    <input type="text" id="encDepartement">
+                </div>
+                <div class="form-group">
+                    <label for="encSpecialite">Spécialité</label>
+                    <input type="text" id="encSpecialite">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeCreateModal()">Annuler</button>
+                    <button type="submit" class="btn-submit">Créer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
     <script>
+        var ASSIGNABLE_ROLES = ['ETUDIANT', 'ENTREPRISE', 'ENCADRANT_ACADEMIQUE', 'ENCADRANT_ENTREPRISE'];
+
         document.addEventListener('DOMContentLoaded', function () {
             checkAuth();
             var user = getCurrentUser();
@@ -36,7 +221,171 @@
                 document.getElementById('userName').textContent = user.email;
                 document.getElementById('userEmail').textContent = user.email;
             }
+            loadUsers();
         });
+
+        async function loadUsers() {
+            var loading = document.getElementById('usersLoading');
+            var table = document.getElementById('usersTable');
+            try {
+                var users = await apiFetch('/users');
+                loading.style.display = 'none';
+                table.style.display = 'table';
+                renderUsers(users);
+            } catch (err) {
+                loading.textContent = 'Erreur lors du chargement des utilisateurs.';
+            }
+        }
+
+        function renderUsers(users) {
+            var tbody = document.getElementById('usersBody');
+            tbody.innerHTML = '';
+            users.forEach(function (u) {
+                var tr = document.createElement('tr');
+
+                // Email
+                var tdEmail = document.createElement('td');
+                tdEmail.textContent = u.email;
+                tr.appendChild(tdEmail);
+
+                // Role dropdown
+                var tdRole = document.createElement('td');
+                if (u.role === 'ADMIN') {
+                    tdRole.textContent = 'ADMIN';
+                } else {
+                    var select = document.createElement('select');
+                    select.className = 'role-select';
+                    ASSIGNABLE_ROLES.forEach(function (r) {
+                        var opt = document.createElement('option');
+                        opt.value = r;
+                        opt.textContent = r;
+                        if (r === u.role) opt.selected = true;
+                        select.appendChild(opt);
+                    });
+                    select.addEventListener('change', function () {
+                        changeRole(u.id, this.value, this);
+                    });
+                    tdRole.appendChild(select);
+                }
+                tr.appendChild(tdRole);
+
+                // Statut
+                var tdStatut = document.createElement('td');
+                var badge = document.createElement('span');
+                badge.className = 'status-badge status-' + u.statutCompte;
+                badge.textContent = u.statutCompte;
+                tdStatut.appendChild(badge);
+                tr.appendChild(tdStatut);
+
+                // Date
+                var tdDate = document.createElement('td');
+                tdDate.textContent = u.dateCreation ? u.dateCreation.substring(0, 10) : '-';
+                tr.appendChild(tdDate);
+
+                // Nom
+                var tdNom = document.createElement('td');
+                tdNom.textContent = u.nom || '-';
+                tr.appendChild(tdNom);
+
+                // Actions (Approuver / Refuser pour EN_ATTENTE)
+                var tdActions = document.createElement('td');
+                if (u.statutCompte === 'EN_ATTENTE') {
+                    tdActions.className = 'actions-cell';
+                    var btnApprove = document.createElement('button');
+                    btnApprove.className = 'btn-approve';
+                    btnApprove.textContent = 'Approuver';
+                    btnApprove.addEventListener('click', function () {
+                        updateStatut(u.id, 'APPROUVE');
+                    });
+                    tdActions.appendChild(btnApprove);
+
+                    var btnReject = document.createElement('button');
+                    btnReject.className = 'btn-reject';
+                    btnReject.textContent = 'Refuser';
+                    btnReject.addEventListener('click', function () {
+                        updateStatut(u.id, 'REFUSE');
+                    });
+                    tdActions.appendChild(btnReject);
+                } else {
+                    tdActions.textContent = '-';
+                }
+                tr.appendChild(tdActions);
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function updateStatut(userId, newStatut) {
+            try {
+                await apiFetch('/users/' + userId + '/statut', {
+                    method: 'PUT',
+                    body: JSON.stringify({ statut: newStatut })
+                });
+                showUsersMessage(newStatut === 'APPROUVE' ? 'Compte approuvé.' : 'Compte refusé.', 'success');
+                loadUsers();
+            } catch (err) {
+                showUsersMessage(err.message || 'Erreur lors de la mise à jour du statut.', 'error');
+            }
+        }
+
+        async function changeRole(userId, newRole, selectEl) {
+            try {
+                await apiFetch('/users/' + userId + '/role', {
+                    method: 'PUT',
+                    body: JSON.stringify({ role: newRole })
+                });
+                showUsersMessage('Rôle mis à jour avec succès.', 'success');
+            } catch (err) {
+                showUsersMessage(err.message || 'Erreur lors de la mise à jour du rôle.', 'error');
+                loadUsers(); // Reload to reset dropdown
+            }
+        }
+
+        function openCreateModal() {
+            document.getElementById('createModal').classList.add('active');
+            document.getElementById('modalMessage').classList.add('hidden');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('active');
+            document.getElementById('createEncadrantForm').reset();
+        }
+
+        document.getElementById('createEncadrantForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var msgDiv = document.getElementById('modalMessage');
+
+            var data = {
+                email: document.getElementById('encEmail').value.trim(),
+                motDePasse: document.getElementById('encPassword').value,
+                nom: document.getElementById('encNom').value.trim(),
+                prenom: document.getElementById('encPrenom').value.trim(),
+                departement: document.getElementById('encDepartement').value.trim(),
+                specialite: document.getElementById('encSpecialite').value.trim()
+            };
+
+            try {
+                await apiFetch('/users/encadrant-academique', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                closeCreateModal();
+                showUsersMessage('Encadrant académique créé avec succès.', 'success');
+                loadUsers();
+            } catch (err) {
+                msgDiv.textContent = err.message || 'Erreur lors de la création.';
+                msgDiv.className = 'message error';
+                msgDiv.classList.remove('hidden');
+            }
+        });
+
+        function showUsersMessage(text, type) {
+            var div = document.getElementById('usersMessage');
+            div.textContent = text;
+            div.className = 'message ' + type;
+            div.classList.remove('hidden');
+            setTimeout(function () { div.classList.add('hidden'); }, 4000);
+        }
     </script>
 </body>
 </html>
