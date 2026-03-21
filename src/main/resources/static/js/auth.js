@@ -1,20 +1,92 @@
+// === Auth Guard & Utilities (utilisé par toutes les pages protégées) ===
+
+function checkAuth() {
+    var token = localStorage.getItem('jwt_token');
+    if (!token) {
+        window.location.href = '/pages/login.html';
+        return false;
+    }
+
+    // Vérifier l'expiration du token
+    try {
+        var payload = parseJwt(token);
+        if (payload.exp && payload.exp * 1000 < Date.now()) {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('user_role');
+            window.location.href = '/pages/login.html';
+            return false;
+        }
+    } catch (e) {
+        localStorage.removeItem('jwt_token');
+        localStorage.removeItem('user_role');
+        window.location.href = '/pages/login.html';
+        return false;
+    }
+
+    return true;
+}
+
+function getCurrentUser() {
+    var token = localStorage.getItem('jwt_token');
+    if (!token) return null;
+
+    try {
+        var payload = parseJwt(token);
+        return {
+            email: payload.sub,
+            role: payload.role,
+            userId: payload.userId
+        };
+    } catch (e) {
+        return null;
+    }
+}
+
+function logout() {
+    // Fire-and-forget POST /api/auth/logout
+    var token = localStorage.getItem('jwt_token');
+    if (token) {
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+        }).catch(function () {});
+    }
+
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user_role');
+    window.location.href = '/pages/login.html';
+}
+
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+}
+
+// === Login Form Logic (uniquement sur login.html) ===
+
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('loginForm');
-    const messageDiv = document.getElementById('message');
+    var form = document.getElementById('loginForm');
+    if (!form) return; // Pas sur la page login
+
+    var messageDiv = document.getElementById('message');
 
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
         clearErrors();
 
-        const email = document.getElementById('email').value.trim();
-        const motDePasse = document.getElementById('motDePasse').value;
+        var email = document.getElementById('email').value.trim();
+        var motDePasse = document.getElementById('motDePasse').value;
 
         if (!validateForm(email, motDePasse)) return;
 
         try {
-            const response = await apiFetch('/auth/login', {
+            var response = await apiFetch('/auth/login', {
                 method: 'POST',
-                body: JSON.stringify({ email, motDePasse }),
+                body: JSON.stringify({ email: email, motDePasse: motDePasse }),
             });
 
             setToken(response.token);
@@ -26,9 +98,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 redirectToDashboard(response.role);
             }, 1000);
         } catch (error) {
-            if (error.status === 401) {
+            if (error && error.status === 401) {
                 showMessage('Identifiants invalides.', 'error');
-            } else if (error.status === 403) {
+            } else if (error && error.status === 403) {
                 showMessage(error.message || 'Accès refusé.', 'error');
             } else {
                 showMessage('Erreur lors de la connexion. Veuillez réessayer.', 'error');

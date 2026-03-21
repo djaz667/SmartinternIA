@@ -141,6 +141,88 @@ body {
     display: none !important;
 }
 
+/* Dashboard layout */
+.dashboard-header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dashboard-header .logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a73e8;
+}
+
+.dashboard-header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dashboard-header .user-name {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.dashboard-header .user-role {
+    font-size: 0.75rem;
+    background: #e8f0fe;
+    color: #1a73e8;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-logout:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.dashboard-content {
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+
+.dashboard-content h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.dashboard-content .welcome-text {
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
 /* Auth link */
 .auth-link {
     text-align: center;

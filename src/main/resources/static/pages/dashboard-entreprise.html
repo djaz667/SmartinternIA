@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Entreprise - SmartIntern AI</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <span class="logo">SmartIntern AI</span>
+        <div class="user-info">
+            <span class="user-role">Entreprise</span>
+            <span class="user-name" id="userName"></span>
+            <button class="btn-logout" onclick="logout()">Déconnexion</button>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <h2>Espace entreprise</h2>
+        <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
+
+        <div class="dashboard-card">
+            <h3>Mes offres de stage</h3>
+            <p>Contenu à venir dans les prochains sprints.</p>
+        </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkAuth();
+            var user = getCurrentUser();
+            if (user) {
+                document.getElementById('userName').textContent = user.email;
+                document.getElementById('userEmail').textContent = user.email;
+            }
+        });
+    </script>
+</body>
+</html>

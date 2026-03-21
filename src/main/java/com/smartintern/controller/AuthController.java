@@ -44,4 +44,9 @@ public class AuthController {
         Map<String, String> response = authService.confirmPasswordReset(request);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout() {
+        return ResponseEntity.ok(Map.of("message", "Déconnexion réussie"));
+    }
 }
