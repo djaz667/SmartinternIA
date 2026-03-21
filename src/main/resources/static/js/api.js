@@ -1,7 +1,8 @@
 const API_BASE_URL = '/api';
-const JWT_KEY = 'smartintern_jwt';
+const JWT_KEY = 'jwt_token';
+const ROLE_KEY = 'user_role';
 
-async function apiRequest(endpoint, options = {}) {
+async function apiFetch(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const token = localStorage.getItem(JWT_KEY);
 
@@ -19,6 +20,13 @@ async function apiRequest(endpoint, options = {}) {
         headers,
     });
 
+    if (response.status === 401) {
+        localStorage.removeItem(JWT_KEY);
+        localStorage.removeItem(ROLE_KEY);
+        window.location.href = '/pages/login.html';
+        return;
+    }
+
     if (!response.ok) {
         const error = await response.json().catch(() => ({
             message: 'Erreur inconnue',
@@ -30,6 +38,9 @@ async function apiRequest(endpoint, options = {}) {
     return response.json();
 }
 
+// Backward-compatible alias
+const apiRequest = apiFetch;
+
 function setToken(token) {
     localStorage.setItem(JWT_KEY, token);
 }
@@ -40,4 +51,13 @@ function getToken() {
 
 function removeToken() {
     localStorage.removeItem(JWT_KEY);
+    localStorage.removeItem(ROLE_KEY);
+}
+
+function setRole(role) {
+    localStorage.setItem(ROLE_KEY, role);
+}
+
+function getRole() {
+    return localStorage.getItem(ROLE_KEY);
 }

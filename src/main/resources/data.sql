@@ -8,6 +8,30 @@ INSERT IGNORE INTO filieres (nom) VALUES ('Cybersécurité');
 INSERT IGNORE INTO filieres (nom) VALUES ('Data Science');
 INSERT IGNORE INTO filieres (nom) VALUES ('Génie Électrique');
 
--- Compte admin par défaut (mot de passe: admin123 hashé BCrypt)
-INSERT IGNORE INTO users (email, mot_de_passe, role, statut_compte, date_creation, actif)
-VALUES ('admin@smartintern.tn', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'ADMIN', 'APPROUVE', NOW(), true);
+-- Comptes de test pré-approuvés (mot de passe: admin123 pour tous)
+-- Admin
+INSERT INTO users (email, mot_de_passe, role, statut_compte, date_creation, actif)
+VALUES ('admin@smartintern.tn', '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y', 'ADMIN', 'APPROUVE', NOW(), true)
+ON DUPLICATE KEY UPDATE mot_de_passe = '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y';
+
+-- Etudiant
+INSERT INTO users (email, mot_de_passe, role, statut_compte, date_creation, actif)
+VALUES ('etudiant@smartintern.tn', '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y', 'ETUDIANT', 'APPROUVE', NOW(), true)
+ON DUPLICATE KEY UPDATE mot_de_passe = '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y';
+
+INSERT INTO etudiants (user_id, nom, prenom, filiere_id)
+SELECT u.id, 'Ben Ali', 'Sami', f.id
+FROM users u, filieres f
+WHERE u.email = 'etudiant@smartintern.tn' AND f.nom = 'Informatique'
+AND NOT EXISTS (SELECT 1 FROM etudiants e WHERE e.user_id = u.id);
+
+-- Entreprise
+INSERT INTO users (email, mot_de_passe, role, statut_compte, date_creation, actif)
+VALUES ('entreprise@smartintern.tn', '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y', 'ENTREPRISE', 'APPROUVE', NOW(), true)
+ON DUPLICATE KEY UPDATE mot_de_passe = '$2a$10$5EqoBNMb9zwIEz34l3L1te8HpB3q7lKmPnSHEYsNr78DTIv.bd92y';
+
+INSERT INTO entreprises (user_id, nom, secteur, adresse, telephone)
+SELECT u.id, 'TechCorp Tunisia', 'Technologies', 'Tunis', '+216 71 000 000'
+FROM users u
+WHERE u.email = 'entreprise@smartintern.tn'
+AND NOT EXISTS (SELECT 1 FROM entreprises e WHERE e.user_id = u.id);

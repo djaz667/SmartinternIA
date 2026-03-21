@@ -39,6 +39,12 @@ public class User {
     @Column(nullable = false)
     private boolean actif;
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private LocalDateTime resetTokenExpiry;
+
     @PrePersist
     protected void onCreate() {
         dateCreation = LocalDateTime.now();

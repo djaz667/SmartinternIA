@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SmartIntern AI</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Connexion</h1>
+            <p class="subtitle">Accédez à votre espace SmartIntern AI</p>
+
+            <div id="message" class="message hidden"></div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                    <span class="error-text" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="motDePasse">Mot de passe</label>
+                    <input type="password" id="motDePasse" name="motDePasse" required
+                           placeholder="Votre mot de passe">
+                    <span class="error-text" id="motDePasseError"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+
+            <p class="auth-link">
+                <a href="/pages/reset-password.html">Mot de passe oublié ?</a>
+            </p>
+            <p class="auth-link">
+                Pas encore de compte ? <a href="/pages/register.html">S'inscrire</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

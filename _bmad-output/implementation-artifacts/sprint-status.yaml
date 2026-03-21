@@ -18,8 +18,8 @@ development_status:
   # Epic 1: Authentification & Profils de base
   epic-1: "in-progress"
   1-1-creer-compte: "review"
-  1-2-connexion-email: "ready-for-dev"
-  1-3-reinitialisation-mot-de-passe: "ready-for-dev"
+  1-2-connexion-email: "review"
+  1-3-reinitialisation-mot-de-passe: "in-progress"
   1-4-deconnexion-securisee: "ready-for-dev"
   1-5-attribuer-roles: "ready-for-dev"
   1-6-gerer-comptes-utilisateurs: "ready-for-dev"
