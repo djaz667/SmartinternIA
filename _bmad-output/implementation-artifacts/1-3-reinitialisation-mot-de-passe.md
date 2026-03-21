@@ -1,6 +1,6 @@
 # Story 1.3: Réinitialisation du mot de passe (U-03)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,34 +19,34 @@ so that je puisse retrouver l'accès à mon compte.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 : Ajouter champ reset token dans User (AC: 2)
-  - [ ] Ajouter à `User.java` : `resetToken` (String, nullable), `resetTokenExpiry` (LocalDateTime, nullable)
-- [ ] Task 2 : Implémenter AuthService.requestPasswordReset() (AC: 2, 5, 6)
-  - [ ] Chercher user par email
-  - [ ] Si trouvé : générer UUID, stocker dans resetToken avec expiry = now + 1h
-  - [ ] Logger le token dans la console (pour la démo PFA)
-  - [ ] Retourner toujours 200 OK avec message "Si l'email existe, un lien de réinitialisation a été envoyé"
-  - [ ] Pour la démo : inclure le token dans la réponse JSON aussi
-- [ ] Task 3 : Implémenter AuthService.confirmPasswordReset() (AC: 3, 5)
-  - [ ] Chercher user par resetToken
-  - [ ] Vérifier que le token n'est pas expiré (resetTokenExpiry > now)
-  - [ ] Encoder le nouveau mot de passe avec BCrypt
-  - [ ] Mettre à jour motDePasse, nullifier resetToken et resetTokenExpiry
-  - [ ] Retourner 200 OK
-  - [ ] Si token invalide ou expiré → 400 "Token invalide ou expiré"
-- [ ] Task 4 : Ajouter les endpoints dans AuthController (AC: 2, 3)
-  - [ ] POST `/api/auth/reset-password` → requestPasswordReset()
-  - [ ] POST `/api/auth/reset-password/confirm` → confirmPasswordReset()
-- [ ] Task 5 : Ajouter à UserRepository (AC: 2, 3)
-  - [ ] `findByResetToken(String token)` : Optional<User>
-- [ ] Task 6 : Créer DTOs (AC: 2, 3)
-  - [ ] `dto/auth/ResetPasswordRequest.java` : email (@Email @NotBlank)
-  - [ ] `dto/auth/ConfirmResetRequest.java` : token (@NotBlank), nouveauMotDePasse (@Size min=8)
-- [ ] Task 7 : Créer reset-password.html + JS (AC: 1, 4)
-  - [ ] Étape 1 : formulaire email → appel POST /api/auth/reset-password
-  - [ ] Étape 2 : formulaire nouveau mot de passe (token récupéré depuis l'URL ?token=xxx ou depuis la réponse)
-  - [ ] Messages de feedback utilisateur
-  - [ ] Lien retour vers login
+- [x] Task 1 : Ajouter champ reset token dans User (AC: 2)
+  - [x] Ajouter à `User.java` : `resetToken` (String, nullable), `resetTokenExpiry` (LocalDateTime, nullable)
+- [x] Task 2 : Implémenter AuthService.requestPasswordReset() (AC: 2, 5, 6)
+  - [x] Chercher user par email
+  - [x] Si trouvé : générer UUID, stocker dans resetToken avec expiry = now + 1h
+  - [x] Logger le token dans la console (pour la démo PFA)
+  - [x] Retourner toujours 200 OK avec message "Si l'email existe, un lien de réinitialisation a été envoyé"
+  - [x] Pour la démo : inclure le token dans la réponse JSON aussi
+- [x] Task 3 : Implémenter AuthService.confirmPasswordReset() (AC: 3, 5)
+  - [x] Chercher user par resetToken
+  - [x] Vérifier que le token n'est pas expiré (resetTokenExpiry > now)
+  - [x] Encoder le nouveau mot de passe avec BCrypt
+  - [x] Mettre à jour motDePasse, nullifier resetToken et resetTokenExpiry
+  - [x] Retourner 200 OK
+  - [x] Si token invalide ou expiré → 400 "Token invalide ou expiré"
+- [x] Task 4 : Ajouter les endpoints dans AuthController (AC: 2, 3)
+  - [x] POST `/api/auth/reset-password` → requestPasswordReset()
+  - [x] POST `/api/auth/reset-password/confirm` → confirmPasswordReset()
+- [x] Task 5 : Ajouter à UserRepository (AC: 2, 3)
+  - [x] `findByResetToken(String token)` : Optional<User>
+- [x] Task 6 : Créer DTOs (AC: 2, 3)
+  - [x] `dto/auth/ResetPasswordRequest.java` : email (@Email @NotBlank)
+  - [x] `dto/auth/ConfirmResetRequest.java` : token (@NotBlank), nouveauMotDePasse (@Size min=8)
+- [x] Task 7 : Créer reset-password.html + JS (AC: 1, 4)
+  - [x] Étape 1 : formulaire email → appel POST /api/auth/reset-password
+  - [x] Étape 2 : formulaire nouveau mot de passe (token récupéré depuis l'URL ?token=xxx ou depuis la réponse)
+  - [x] Messages de feedback utilisateur
+  - [x] Lien retour vers login
 
 ## Dev Notes
 
@@ -75,6 +75,32 @@ La réponse est TOUJOURS la même que l'email existe ou non. Cela empêche un at
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Debug Log References
+- Aucun problème rencontré
+
 ### Completion Notes List
+- Task 1: Ajouté resetToken (String) et resetTokenExpiry (LocalDateTime) dans User.java, colonnes nullable.
+- Task 2: requestPasswordReset() génère un UUID, stocke en BDD avec expiry +1h, log le token dans la console, retourne un message générique anti-énumération + le token pour la démo PFA.
+- Task 3: confirmPasswordReset() vérifie token existence + expiration, encode le nouveau mot de passe BCrypt, nullifie le token. Token expiré → nettoyé + 400.
+- Task 4: POST /api/auth/reset-password et POST /api/auth/reset-password/confirm ajoutés dans AuthController.
+- Task 5: findByResetToken(String) ajouté à UserRepository.
+- Task 6: ResetPasswordRequest et ConfirmResetRequest DTOs créés avec validation Jakarta.
+- Task 7: reset-password.html avec 2 étapes (email puis nouveau MDP), reset-password.js avec gestion token URL ou réponse, lien "Mot de passe oublié" ajouté sur login.html.
+- 5 tests unitaires ajoutés couvrant : génération token, anti-énumération, confirmation valide, token invalide, token expiré.
+
 ### File List
+- src/main/java/com/smartintern/model/User.java (MODIFIED)
+- src/main/java/com/smartintern/repository/UserRepository.java (MODIFIED)
+- src/main/java/com/smartintern/service/AuthService.java (MODIFIED)
+- src/main/java/com/smartintern/controller/AuthController.java (MODIFIED)
+- src/main/java/com/smartintern/dto/auth/ResetPasswordRequest.java (NEW)
+- src/main/java/com/smartintern/dto/auth/ConfirmResetRequest.java (NEW)
+- src/main/resources/static/pages/reset-password.html (NEW)
+- src/main/resources/static/js/reset-password.js (NEW)
+- src/main/resources/static/pages/login.html (MODIFIED)
+- src/test/java/com/smartintern/service/AuthServiceResetPasswordTest.java (NEW)
+
+## Change Log
+- 2026-03-21: Implémentation complète de la story 1-3 Réinitialisation mot de passe — ajout champs resetToken/resetTokenExpiry dans User, endpoints reset-password et reset-password/confirm, page frontend 2 étapes, anti-énumération, token loggé + retourné pour démo PFA. 38 tests passent (5 nouveaux + 33 existants).

@@ -1,5 +1,7 @@
 C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\SmartInternApplication.java
+C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\dto\auth\ResetPasswordRequest.java
 C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\repository\UserRepository.java
+C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\dto\auth\ConfirmResetRequest.java
 C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\exception\ResourceNotFoundException.java
 C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\model\Filiere.java
 C:\Users\djazi\SmartinternIA\src\main\java\com\smartintern\repository\FiliereRepository.java
