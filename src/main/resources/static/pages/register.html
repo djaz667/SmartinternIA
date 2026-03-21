@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - SmartIntern AI</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Créer un compte</h1>
+            <p class="subtitle">Rejoignez SmartIntern AI</p>
+
+            <div id="message" class="message hidden"></div>
+
+            <form id="registerForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                    <span class="error-text" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="motDePasse">Mot de passe *</label>
+                    <input type="password" id="motDePasse" name="motDePasse" required minlength="8"
+                           placeholder="Minimum 8 caractères">
+                    <span class="error-text" id="motDePasseError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmMotDePasse">Confirmer le mot de passe *</label>
+                    <input type="password" id="confirmMotDePasse" name="confirmMotDePasse" required
+                           placeholder="Retapez le mot de passe">
+                    <span class="error-text" id="confirmMotDePasseError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Je suis *</label>
+                    <select id="role" name="role" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="ETUDIANT">Étudiant</option>
+                        <option value="ENTREPRISE">Entreprise</option>
+                    </select>
+                    <span class="error-text" id="roleError"></span>
+                </div>
+
+                <!-- Champs étudiant -->
+                <div id="etudiantFields" class="dynamic-fields hidden">
+                    <h3>Informations étudiant</h3>
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom">
+                    </div>
+                    <div class="form-group">
+                        <label for="filiereId">Filière</label>
+                        <select id="filiereId" name="filiereId">
+                            <option value="">-- Sélectionnez une filière --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Champs entreprise -->
+                <div id="entrepriseFields" class="dynamic-fields hidden">
+                    <h3>Informations entreprise</h3>
+                    <div class="form-group">
+                        <label for="nomEntreprise">Nom de l'entreprise</label>
+                        <input type="text" id="nomEntreprise" name="nomEntreprise"
+                               placeholder="Nom de votre entreprise">
+                    </div>
+                    <div class="form-group">
+                        <label for="secteur">Secteur d'activité</label>
+                        <input type="text" id="secteur" name="secteur" placeholder="Ex: Technologies, Finance...">
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse</label>
+                        <input type="text" id="adresse" name="adresse" placeholder="Adresse de l'entreprise">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Téléphone</label>
+                        <input type="tel" id="telephone" name="telephone" placeholder="+216 XX XXX XXX">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">S'inscrire</button>
+            </form>
+
+            <p class="auth-link">
+                Déjà un compte ? <a href="/pages/login.html">Se connecter</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/register.js"></script>
+</body>
+</html>

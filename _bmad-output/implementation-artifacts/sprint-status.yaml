@@ -12,12 +12,12 @@
 sprint: 1
 sprint_goal: "Authentification & Profils de base"
 total_points: 20
-last_updated: "2026-03-20"
+last_updated: "2026-03-21"
 
 development_status:
   # Epic 1: Authentification & Profils de base
   epic-1: "in-progress"
-  1-1-creer-compte: "ready-for-dev"
+  1-1-creer-compte: "review"
   1-2-connexion-email: "ready-for-dev"
   1-3-reinitialisation-mot-de-passe: "ready-for-dev"
   1-4-deconnexion-securisee: "ready-for-dev"

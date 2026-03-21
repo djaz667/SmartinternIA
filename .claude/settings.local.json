@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(/tmp/apache-maven-3.9.6/bin/mvn test:*)"
+    ]
+  }
+}
