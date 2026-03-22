@@ -1,5 +1,6 @@
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\security\JwtTokenProviderTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\UserServiceTest.java
+C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\FileStorageServiceTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\security\JwtAuthenticationFilterTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\AuthServiceLoginTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\SmartInternApplicationTests.java
@@ -7,3 +8,4 @@ C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\AuthServiceTe
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\security\CustomUserDetailsServiceTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\controller\AuthControllerTest.java
 C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\AuthServiceResetPasswordTest.java
+C:\Users\djazi\SmartinternIA\src\test\java\com\smartintern\service\EtudiantServiceTest.java

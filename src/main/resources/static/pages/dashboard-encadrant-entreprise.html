@@ -5,26 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Encadrant Entreprise - SmartIntern AI</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-    <header class="dashboard-header">
-        <span class="logo">SmartIntern AI</span>
-        <div class="user-info">
-            <span class="user-role">Encadrant Entreprise</span>
-            <span class="user-name" id="userName"></span>
-            <button class="btn-logout" onclick="logout()">Déconnexion</button>
-        </div>
-    </header>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">SmartIntern AI</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-section-title">Stagiaires</li>
+                <li><a href="#" data-section="section-stagiaires" class="active"><span class="nav-icon">&#128101;</span> Mes stagiaires</a></li>
+                <li><a href="#" data-section="section-missions"><span class="nav-icon">&#128203;</span> Definir missions</a></li>
+                <li class="sidebar-section-title">Suivi</li>
+                <li><a href="#" data-section="section-taches"><span class="nav-icon">&#9989;</span> Valider taches</a></li>
+                <li><a href="#" data-section="section-evaluation"><span class="nav-icon">&#128196;</span> Fiche evaluation</a></li>
+                <li><a href="#" data-section="section-convention"><span class="nav-icon">&#9999;</span> Signer convention</a></li>
+            </ul>
+        </aside>
 
-    <main class="dashboard-content">
-        <h2>Espace encadrant entreprise</h2>
-        <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
+        <!-- Main -->
+        <div class="main-area">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+                </div>
+                <div class="header-right">
+                    <span class="header-role">Encadrant Entreprise</span>
+                    <span class="header-email" id="userName"></span>
+                    <button class="btn-logout" onclick="logout()">Deconnexion</button>
+                </div>
+            </header>
 
-        <div class="dashboard-card">
-            <h3>Mes stagiaires</h3>
-            <p>Contenu à venir dans les prochains sprints.</p>
+            <main class="dashboard-content">
+                <h1 class="page-title">Espace encadrant entreprise</h1>
+                <p class="page-subtitle">Bienvenue, <span id="userEmail"></span></p>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">&#128101;</div>
+                        <div class="stat-info">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Stagiaires</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">&#9989;</div>
+                        <div class="stat-info">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Taches validees</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">&#9203;</div>
+                        <div class="stat-info">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Taches en attente</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widget -->
+                <div class="widgets-grid">
+                    <div class="widget-card">
+                        <div class="widget-title">&#128200; Progression des stagiaires</div>
+                        <ul class="widget-list">
+                            <li><span style="color:#94a3b8">Le suivi de progression sera disponible prochainement</span></li>
+                        </ul>
+                    </div>
+                    <div class="widget-card">
+                        <div class="widget-alert">
+                            <span class="widget-alert-icon">&#128161;</span>
+                            <div class="widget-alert-text">
+                                <strong>Info</strong><br>
+                                Definissez les missions et validez les taches de vos stagiaires pour suivre leur progression.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Sections -->
+                <section id="section-stagiaires" class="content-section active">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128101;</div>
+                            <div class="coming-soon-text">Mes stagiaires</div>
+                            <div class="coming-soon-sub">Consultez la liste de vos stagiaires et leur avancement. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-missions" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128203;</div>
+                            <div class="coming-soon-text">Definir missions</div>
+                            <div class="coming-soon-sub">Creez et assignez des missions a vos stagiaires. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-taches" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#9989;</div>
+                            <div class="coming-soon-text">Valider taches</div>
+                            <div class="coming-soon-sub">Validez les taches completees par vos stagiaires. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-evaluation" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128196;</div>
+                            <div class="coming-soon-text">Fiche evaluation</div>
+                            <div class="coming-soon-sub">Remplissez les fiches d'evaluation de vos stagiaires. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-convention" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#9999;</div>
+                            <div class="coming-soon-text">Signer convention</div>
+                            <div class="coming-soon-sub">Signez electroniquement les conventions de stage. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
-    </main>
+    </div>
 
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
@@ -36,7 +149,38 @@
                 document.getElementById('userName').textContent = user.email;
                 document.getElementById('userEmail').textContent = user.email;
             }
+            initSidebar();
         });
+
+        function initSidebar() {
+            var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    document.querySelectorAll('.content-section').forEach(function(s) {
+                        s.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    var sectionId = this.getAttribute('data-section');
+                    var section = document.getElementById(sectionId);
+                    if (section) section.classList.add('active');
+                    closeSidebar();
+                });
+            });
+        }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('open');
+        }
+
+        function closeSidebar() {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.querySelector('.sidebar-overlay').classList.remove('open');
+        }
+
+        document.querySelector('.sidebar-overlay').addEventListener('click', closeSidebar);
     </script>
 </body>
 </html>

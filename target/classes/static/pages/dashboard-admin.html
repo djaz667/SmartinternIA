@@ -5,260 +5,301 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - SmartIntern AI</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <style>
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-        }
+        .users-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
         .users-table th, .users-table td {
-            padding: 10px 14px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            font-size: 0.9rem;
+            padding: 10px 14px; text-align: left;
+            border-bottom: 1px solid #f1f5f9; font-size: 0.88rem;
         }
-        .users-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #555;
-        }
-        .users-table tr:hover {
-            background: #f5f7fa;
-        }
+        .users-table th { background: #f8fafc; font-weight: 600; color: #475569; }
+        .users-table tr:hover { background: #f8fafc; }
         .role-select, .filter-select {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
+            padding: 6px 10px; border: 1px solid #e2e8f0;
+            border-radius: 6px; font-size: 0.82rem; cursor: pointer;
         }
         .status-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            display: inline-block; padding: 3px 10px;
+            border-radius: 12px; font-size: 0.75rem; font-weight: 600;
         }
-        .status-APPROUVE { background: #d4edda; color: #155724; }
-        .status-EN_ATTENTE { background: #fff3cd; color: #856404; }
-        .status-REFUSE { background: #f8d7da; color: #721c24; }
-        .status-SUSPENDU { background: #e2e3e5; color: #383d41; }
-        .btn-action {
-            padding: 6px 14px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-create {
-            background: #28a745;
-            color: #fff;
-        }
-        .btn-create:hover { background: #218838; }
+        .status-APPROUVE { background: #d1fae5; color: #065f46; }
+        .status-EN_ATTENTE { background: #fef3c7; color: #92400e; }
+        .status-REFUSE { background: #fee2e2; color: #991b1b; }
+        .status-SUSPENDU { background: #f1f5f9; color: #475569; }
         .btn-approve {
-            background: #28a745;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
+            background: #d1fae5; color: #065f46; padding: 5px 12px;
+            border: none; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: background 0.15s;
         }
-        .btn-approve:hover { background: #218838; }
+        .btn-approve:hover { background: #a7f3d0; }
         .btn-reject {
-            background: #dc3545;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
+            background: #fee2e2; color: #991b1b; padding: 5px 12px;
+            border: none; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: background 0.15s;
         }
-        .btn-reject:hover { background: #c82333; }
+        .btn-reject:hover { background: #fecaca; }
         .btn-suspend {
-            background: #6c757d;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
+            background: #f1f5f9; color: #475569; padding: 5px 12px;
+            border: none; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: background 0.15s;
         }
-        .btn-suspend:hover { background: #5a6268; }
+        .btn-suspend:hover { background: #e2e8f0; }
         .btn-reactivate {
-            background: #17a2b8;
-            color: #fff;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
+            background: #dbeafe; color: #1d4ed8; padding: 5px 12px;
+            border: none; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: background 0.15s;
         }
-        .btn-reactivate:hover { background: #138496; }
+        .btn-reactivate:hover { background: #bfdbfe; }
         .actions-cell { display: flex; gap: 6px; align-items: center; }
-        /* Pending badge */
+        .btn-action-create {
+            background: #3b82f6; color: #fff; padding: 8px 16px;
+            border: none; border-radius: 8px; font-size: 0.82rem;
+            cursor: pointer; font-weight: 600; transition: background 0.15s;
+        }
+        .btn-action-create:hover { background: #2563eb; }
+        .filters-bar {
+            display: flex; gap: 12px; align-items: center;
+            margin-top: 12px; flex-wrap: wrap;
+        }
+        .filters-bar label { font-size: 0.82rem; font-weight: 600; color: #475569; }
+        .card-header {
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 12px;
+        }
+        .card-title-row { display: flex; align-items: center; gap: 8px; }
         .pending-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #dc3545;
-            color: #fff;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-left: 8px;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #ef4444; color: #fff; border-radius: 50%;
+            width: 22px; height: 22px; font-size: 0.72rem; font-weight: 700;
         }
         .pending-badge.hidden { display: none; }
-        /* Filters bar */
-        .filters-bar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .filters-bar label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #555;
-        }
-        /* Card header */
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .card-title-row {
-            display: flex;
-            align-items: center;
-        }
         /* Modal */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); z-index: 200;
+            justify-content: center; align-items: center;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
-            background: #fff;
-            border-radius: 12px;
-            padding: 32px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            background: #fff; border-radius: 14px; padding: 32px;
+            width: 100%; max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
-        .modal-content h3 {
-            margin-bottom: 20px;
-            color: #1a73e8;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .modal-actions .btn { width: auto; }
+        .modal-content h3 { margin-bottom: 20px; color: #1e293b; font-size: 1.1rem; }
+        .modal-actions { display: flex; gap: 12px; margin-top: 20px; }
         .btn-cancel {
-            background: #6c757d;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            background: #f1f5f9; color: #475569; padding: 10px 20px;
+            border: none; border-radius: 8px; cursor: pointer; font-weight: 600;
         }
-        .btn-cancel:hover { background: #5a6268; }
+        .btn-cancel:hover { background: #e2e8f0; }
         .btn-submit {
-            background: #1a73e8;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            background: #3b82f6; color: #fff; padding: 10px 20px;
+            border: none; border-radius: 8px; cursor: pointer; font-weight: 600;
         }
-        .btn-submit:hover { background: #1557b0; }
-        .loading { text-align: center; padding: 20px; color: #888; }
+        .btn-submit:hover { background: #2563eb; }
+        .loading { text-align: center; padding: 20px; color: #94a3b8; }
+        .message { padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 14px; }
+        .message.success { background: #d1fae5; color: #065f46; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+        .message.hidden { display: none; }
     </style>
 </head>
 <body>
-    <header class="dashboard-header">
-        <span class="logo">SmartIntern AI</span>
-        <div class="user-info">
-            <span class="user-role">Admin</span>
-            <span class="user-name" id="userName"></span>
-            <button class="btn-logout" onclick="logout()">Déconnexion</button>
-        </div>
-    </header>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">SmartIntern AI</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-section-title">Gestion</li>
+                <li><a href="#" data-section="section-utilisateurs" class="active"><span class="nav-icon">&#128101;</span> Utilisateurs</a></li>
+                <li><a href="#" data-section="section-offres"><span class="nav-icon">&#128188;</span> Offres</a></li>
+                <li><a href="#" data-section="section-stages"><span class="nav-icon">&#127891;</span> Stages</a></li>
+                <li class="sidebar-section-title">Suivi</li>
+                <li><a href="#" data-section="section-documents"><span class="nav-icon">&#128450;</span> Documents</a></li>
+                <li><a href="#" data-section="section-statistiques"><span class="nav-icon">&#128202;</span> Statistiques</a></li>
+                <li><a href="#" data-section="section-risque"><span class="nav-icon">&#9888;</span> Etudiants a risque</a></li>
+            </ul>
+        </aside>
 
-    <main class="dashboard-content">
-        <h2>Tableau de bord administrateur</h2>
-        <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
-
-        <div class="dashboard-card">
-            <div class="card-header">
-                <div class="card-title-row">
-                    <h3>Gestion des utilisateurs</h3>
-                    <span class="pending-badge hidden" id="pendingBadge">0</span>
+        <!-- Main -->
+        <div class="main-area">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
                 </div>
-                <button class="btn-action btn-create" onclick="openCreateModal()">+ Créer encadrant académique</button>
-            </div>
+                <div class="header-right">
+                    <span class="header-role">Admin</span>
+                    <span class="header-email" id="userName"></span>
+                    <button class="btn-logout" onclick="logout()">Deconnexion</button>
+                </div>
+            </header>
 
-            <div class="filters-bar">
-                <label for="filterStatut">Statut :</label>
-                <select class="filter-select" id="filterStatut" onchange="applyFilters()">
-                    <option value="">Tous</option>
-                    <option value="EN_ATTENTE">En attente</option>
-                    <option value="APPROUVE">Approuvé</option>
-                    <option value="REFUSE">Refusé</option>
-                    <option value="SUSPENDU">Suspendu</option>
-                </select>
-                <label for="filterRole">Rôle :</label>
-                <select class="filter-select" id="filterRole" onchange="applyFilters()">
-                    <option value="">Tous</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="ETUDIANT">Étudiant</option>
-                    <option value="ENTREPRISE">Entreprise</option>
-                    <option value="ENCADRANT_ACADEMIQUE">Encadrant Académique</option>
-                    <option value="ENCADRANT_ENTREPRISE">Encadrant Entreprise</option>
-                </select>
-            </div>
+            <main class="dashboard-content">
+                <h1 class="page-title">Tableau de bord administrateur</h1>
+                <p class="page-subtitle">Bienvenue, <span id="userEmail"></span></p>
 
-            <div id="usersMessage" class="message hidden"></div>
-            <div id="usersLoading" class="loading">Chargement...</div>
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">&#128100;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statEtudiants">--</div>
+                            <div class="stat-label">Etudiants</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">&#127970;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statEntreprises">--</div>
+                            <div class="stat-label">Entreprises</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">&#127891;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statStages">--</div>
+                            <div class="stat-label">Stages en cours</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">&#128276;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statPending">0</div>
+                            <div class="stat-label">Comptes EN_ATTENTE</div>
+                        </div>
+                    </div>
+                </div>
 
-            <table class="users-table" id="usersTable" style="display:none;">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Rôle</th>
-                        <th>Statut</th>
-                        <th>Date création</th>
-                        <th>Nom</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="usersBody"></tbody>
-            </table>
+                <!-- Widgets -->
+                <div class="widgets-grid">
+                    <div class="widget-card">
+                        <div class="widget-title">&#128202; Repartition par filiere</div>
+                        <ul class="widget-list">
+                            <li><span style="color:#94a3b8">Statistiques disponibles prochainement</span></li>
+                        </ul>
+                    </div>
+                    <div class="widget-card">
+                        <div class="widget-title">&#9888; Etudiants a risque</div>
+                        <ul class="widget-list">
+                            <li><span style="color:#94a3b8">Detection disponible prochainement</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Content Sections -->
+                <!-- Section: Utilisateurs -->
+                <section id="section-utilisateurs" class="content-section active">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-title-row">
+                                <h3 style="color:#1e293b; margin:0;">Gestion des utilisateurs</h3>
+                                <span class="pending-badge hidden" id="pendingBadge">0</span>
+                            </div>
+                            <button class="btn-action-create" onclick="openCreateModal()">+ Creer encadrant academique</button>
+                        </div>
+
+                        <div class="filters-bar">
+                            <label for="filterStatut">Statut :</label>
+                            <select class="filter-select" id="filterStatut" onchange="applyFilters()">
+                                <option value="">Tous</option>
+                                <option value="EN_ATTENTE">En attente</option>
+                                <option value="APPROUVE">Approuve</option>
+                                <option value="REFUSE">Refuse</option>
+                                <option value="SUSPENDU">Suspendu</option>
+                            </select>
+                            <label for="filterRole">Role :</label>
+                            <select class="filter-select" id="filterRole" onchange="applyFilters()">
+                                <option value="">Tous</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="ETUDIANT">Etudiant</option>
+                                <option value="ENTREPRISE">Entreprise</option>
+                                <option value="ENCADRANT_ACADEMIQUE">Encadrant Academique</option>
+                                <option value="ENCADRANT_ENTREPRISE">Encadrant Entreprise</option>
+                            </select>
+                        </div>
+
+                        <div id="usersMessage" class="message hidden"></div>
+                        <div id="usersLoading" class="loading">Chargement...</div>
+
+                        <table class="users-table" id="usersTable" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Statut</th>
+                                    <th>Date creation</th>
+                                    <th>Nom</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Section: Offres -->
+                <section id="section-offres" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128188;</div>
+                            <div class="coming-soon-text">Gestion des offres</div>
+                            <div class="coming-soon-sub">Supervisez les offres de stage publiees. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Stages -->
+                <section id="section-stages" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#127891;</div>
+                            <div class="coming-soon-text">Gestion des stages</div>
+                            <div class="coming-soon-sub">Suivez les stages en cours et termines. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Documents -->
+                <section id="section-documents" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128450;</div>
+                            <div class="coming-soon-text">Documents</div>
+                            <div class="coming-soon-sub">Gerez les conventions, rapports et attestations. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Statistiques -->
+                <section id="section-statistiques" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128202;</div>
+                            <div class="coming-soon-text">Statistiques</div>
+                            <div class="coming-soon-sub">Tableaux de bord analytiques et KPIs. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Etudiants a risque -->
+                <section id="section-risque" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#9888;</div>
+                            <div class="coming-soon-text">Etudiants a risque</div>
+                            <div class="coming-soon-sub">Identifiez les etudiants en difficulte via l'IA. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
-    </main>
+    </div>
 
-    <!-- Modal créer encadrant académique -->
+    <!-- Modal creer encadrant academique -->
     <div class="modal-overlay" id="createModal">
         <div class="modal-content">
-            <h3>Créer un encadrant académique</h3>
+            <h3>Creer un encadrant academique</h3>
             <div id="modalMessage" class="message hidden"></div>
             <form id="createEncadrantForm">
                 <div class="form-group">
@@ -274,20 +315,20 @@
                     <input type="text" id="encNom" required>
                 </div>
                 <div class="form-group">
-                    <label for="encPrenom">Prénom</label>
+                    <label for="encPrenom">Prenom</label>
                     <input type="text" id="encPrenom" required>
                 </div>
                 <div class="form-group">
-                    <label for="encDepartement">Département</label>
+                    <label for="encDepartement">Departement</label>
                     <input type="text" id="encDepartement">
                 </div>
                 <div class="form-group">
-                    <label for="encSpecialite">Spécialité</label>
+                    <label for="encSpecialite">Specialite</label>
                     <input type="text" id="encSpecialite">
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="closeCreateModal()">Annuler</button>
-                    <button type="submit" class="btn-submit">Créer</button>
+                    <button type="submit" class="btn-submit">Creer</button>
                 </div>
             </form>
         </div>
@@ -305,23 +346,60 @@
                 document.getElementById('userName').textContent = user.email;
                 document.getElementById('userEmail').textContent = user.email;
             }
+            initSidebar();
             loadPendingCount();
             loadUsers();
         });
 
+        // === Sidebar Navigation ===
+        function initSidebar() {
+            var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    document.querySelectorAll('.content-section').forEach(function(s) {
+                        s.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    var sectionId = this.getAttribute('data-section');
+                    var section = document.getElementById(sectionId);
+                    if (section) section.classList.add('active');
+                    closeSidebar();
+                });
+            });
+        }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('open');
+        }
+
+        function closeSidebar() {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.querySelector('.sidebar-overlay').classList.remove('open');
+        }
+
+        document.querySelector('.sidebar-overlay').addEventListener('click', closeSidebar);
+
+        // === Pending Count ===
         async function loadPendingCount() {
             try {
                 var data = await apiFetch('/users/pending/count');
                 var badge = document.getElementById('pendingBadge');
+                var statEl = document.getElementById('statPending');
                 if (data.count > 0) {
                     badge.textContent = data.count;
                     badge.classList.remove('hidden');
+                    statEl.textContent = data.count;
                 } else {
                     badge.classList.add('hidden');
+                    statEl.textContent = '0';
                 }
             } catch (err) { /* ignore */ }
         }
 
+        // === Load Users ===
         async function loadUsers() {
             var loading = document.getElementById('usersLoading');
             var table = document.getElementById('usersTable');
@@ -343,9 +421,7 @@
             }
         }
 
-        function applyFilters() {
-            loadUsers();
-        }
+        function applyFilters() { loadUsers(); }
 
         function renderUsers(users) {
             var tbody = document.getElementById('usersBody');
@@ -353,12 +429,10 @@
             users.forEach(function (u) {
                 var tr = document.createElement('tr');
 
-                // Email
                 var tdEmail = document.createElement('td');
                 tdEmail.textContent = u.email;
                 tr.appendChild(tdEmail);
 
-                // Role dropdown
                 var tdRole = document.createElement('td');
                 if (u.role === 'ADMIN') {
                     tdRole.textContent = 'ADMIN';
@@ -379,7 +453,6 @@
                 }
                 tr.appendChild(tdRole);
 
-                // Statut
                 var tdStatut = document.createElement('td');
                 var badge = document.createElement('span');
                 badge.className = 'status-badge status-' + u.statutCompte;
@@ -387,17 +460,14 @@
                 tdStatut.appendChild(badge);
                 tr.appendChild(tdStatut);
 
-                // Date
                 var tdDate = document.createElement('td');
                 tdDate.textContent = u.dateCreation ? u.dateCreation.substring(0, 10) : '-';
                 tr.appendChild(tdDate);
 
-                // Nom
                 var tdNom = document.createElement('td');
                 tdNom.textContent = u.nom || '-';
                 tr.appendChild(tdNom);
 
-                // Actions
                 var tdActions = document.createElement('td');
                 tdActions.className = 'actions-cell';
 
@@ -422,14 +492,13 @@
                 } else if (u.statutCompte === 'SUSPENDU') {
                     var btnReactivate = document.createElement('button');
                     btnReactivate.className = 'btn-reactivate';
-                    btnReactivate.textContent = 'Réactiver';
+                    btnReactivate.textContent = 'Reactiver';
                     btnReactivate.addEventListener('click', function () { updateStatut(u.id, 'APPROUVE'); });
                     tdActions.appendChild(btnReactivate);
                 } else {
                     tdActions.textContent = '-';
                 }
                 tr.appendChild(tdActions);
-
                 tbody.appendChild(tr);
             });
         }
@@ -441,15 +510,15 @@
                     body: JSON.stringify({ statut: newStatut })
                 });
                 var messages = {
-                    'APPROUVE': 'Compte approuvé.',
-                    'REFUSE': 'Compte refusé.',
+                    'APPROUVE': 'Compte approuve.',
+                    'REFUSE': 'Compte refuse.',
                     'SUSPENDU': 'Compte suspendu.'
                 };
-                showUsersMessage(messages[newStatut] || 'Statut mis à jour.', 'success');
+                showUsersMessage(messages[newStatut] || 'Statut mis a jour.', 'success');
                 loadPendingCount();
                 loadUsers();
             } catch (err) {
-                showUsersMessage(err.message || 'Erreur lors de la mise à jour du statut.', 'error');
+                showUsersMessage(err.message || 'Erreur lors de la mise a jour du statut.', 'error');
             }
         }
 
@@ -459,9 +528,9 @@
                     method: 'PUT',
                     body: JSON.stringify({ role: newRole })
                 });
-                showUsersMessage('Rôle mis à jour avec succès.', 'success');
+                showUsersMessage('Role mis a jour avec succes.', 'success');
             } catch (err) {
-                showUsersMessage(err.message || 'Erreur lors de la mise à jour du rôle.', 'error');
+                showUsersMessage(err.message || 'Erreur lors de la mise a jour du role.', 'error');
                 loadUsers();
             }
         }
@@ -495,11 +564,11 @@
                     body: JSON.stringify(data)
                 });
                 closeCreateModal();
-                showUsersMessage('Encadrant académique créé avec succès.', 'success');
+                showUsersMessage('Encadrant academique cree avec succes.', 'success');
                 loadPendingCount();
                 loadUsers();
             } catch (err) {
-                msgDiv.textContent = err.message || 'Erreur lors de la création.';
+                msgDiv.textContent = err.message || 'Erreur lors de la creation.';
                 msgDiv.className = 'message error';
                 msgDiv.classList.remove('hidden');
             }

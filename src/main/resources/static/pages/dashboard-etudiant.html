@@ -3,28 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Étudiant - SmartIntern AI</title>
+    <title>Dashboard Etudiant - SmartIntern AI</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        /* Profile form */
+        .profile-form .form-group { margin-bottom: 14px; }
+        .profile-form label {
+            display: block; font-weight: 600; margin-bottom: 4px;
+            color: #475569; font-size: 0.88rem;
+        }
+        .profile-form input, .profile-form select, .profile-form textarea {
+            width: 100%; padding: 9px 12px; border: 1px solid #e2e8f0;
+            border-radius: 8px; font-size: 0.88rem; background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .profile-form textarea { resize: vertical; min-height: 80px; }
+        .profile-form input:focus, .profile-form select:focus, .profile-form textarea:focus {
+            outline: none; border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .btn-save {
+            background: #3b82f6; color: #fff; border: none;
+            padding: 10px 24px; border-radius: 8px; font-weight: 600;
+            cursor: pointer; font-size: 0.88rem; transition: background 0.15s;
+        }
+        .btn-save:hover { background: #2563eb; }
+        .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .two-cols { grid-template-columns: 1fr; } }
+
+        /* CV Zone */
+        .cv-zone {
+            border: 2px dashed #cbd5e1; border-radius: 10px; padding: 28px;
+            text-align: center; margin-top: 16px; transition: border-color 0.2s, background 0.2s;
+        }
+        .cv-zone.dragover { border-color: #3b82f6; background: #eff6ff; }
+        .cv-zone input[type="file"] { display: none; }
+        .cv-zone label { cursor: pointer; color: #3b82f6; font-weight: 600; }
+        .cv-info {
+            display: flex; align-items: center; gap: 12px;
+            margin-top: 16px; padding: 14px; background: #f8fafc;
+            border-radius: 10px; border: 1px solid #e2e8f0;
+        }
+        .cv-info .cv-icon {
+            background: #fee2e2; color: #dc2626; padding: 6px 10px;
+            border-radius: 6px; font-weight: 700; font-size: 0.8rem;
+        }
+        .cv-info .cv-name { font-weight: 600; color: #334155; flex: 1; }
+        .btn-replace {
+            background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+            padding: 6px 14px; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: all 0.15s;
+        }
+        .btn-replace:hover { background: #e2e8f0; }
+        .btn-delete-cv {
+            background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;
+            padding: 6px 14px; border-radius: 6px; font-size: 0.8rem;
+            cursor: pointer; font-weight: 600; transition: all 0.15s;
+        }
+        .btn-delete-cv:hover { background: #fee2e2; border-color: #fca5a5; }
+
+        /* Message */
+        .message { padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 14px; }
+        .message.success { background: #d1fae5; color: #065f46; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+        .message.hidden { display: none; }
+    </style>
 </head>
 <body>
-    <header class="dashboard-header">
-        <span class="logo">SmartIntern AI</span>
-        <div class="user-info">
-            <span class="user-role">Étudiant</span>
-            <span class="user-name" id="userName"></span>
-            <button class="btn-logout" onclick="logout()">Déconnexion</button>
-        </div>
-    </header>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">SmartIntern AI</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-section-title">Principal</li>
+                <li><a href="#" data-section="section-profil" class="active"><span class="nav-icon">&#128100;</span> Mon profil & CV</a></li>
+                <li><a href="#" data-section="section-offres"><span class="nav-icon">&#128188;</span> Offres de stage</a></li>
+                <li><a href="#" data-section="section-candidatures"><span class="nav-icon">&#128203;</span> Mes candidatures</a></li>
+                <li class="sidebar-section-title">Stage</li>
+                <li><a href="#" data-section="section-stage"><span class="nav-icon">&#127891;</span> Mon stage</a></li>
+                <li><a href="#" data-section="section-rapports-hebdo"><span class="nav-icon">&#128221;</span> Rapports hebdo</a></li>
+                <li><a href="#" data-section="section-rapport-final"><span class="nav-icon">&#128214;</span> Rapport final</a></li>
+            </ul>
+        </aside>
 
-    <main class="dashboard-content">
-        <h2>Mon espace étudiant</h2>
-        <p class="welcome-text">Bienvenue, <span id="userEmail"></span></p>
+        <!-- Main -->
+        <div class="main-area">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+                </div>
+                <div class="header-right">
+                    <span class="header-role">Etudiant</span>
+                    <span class="header-email" id="userName"></span>
+                    <button class="btn-logout" onclick="logout()">Deconnexion</button>
+                </div>
+            </header>
 
-        <div class="dashboard-card">
-            <h3>Mes candidatures</h3>
-            <p>Contenu à venir dans les prochains sprints.</p>
+            <main class="dashboard-content">
+                <h1 class="page-title">Mon espace etudiant</h1>
+                <p class="page-subtitle">Bienvenue, <span id="userEmail"></span></p>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">&#128203;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statPending">0</div>
+                            <div class="stat-label">Candidatures en attente</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">&#9989;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statAccepted">0</div>
+                            <div class="stat-label">Candidatures acceptees</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">&#10060;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statRejected">0</div>
+                            <div class="stat-label">Candidatures refusees</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">&#127891;</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statStage">--</div>
+                            <div class="stat-label">Statut stage</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widgets -->
+                <div class="widgets-grid">
+                    <div class="widget-card">
+                        <div class="widget-title">&#11088; Top 3 offres suggerees</div>
+                        <ul class="widget-list" id="suggestedOffers">
+                            <li><span style="color:#94a3b8">Les suggestions seront disponibles prochainement</span></li>
+                        </ul>
+                    </div>
+                    <div class="widget-card">
+                        <div class="widget-alert">
+                            <span class="widget-alert-icon">&#128276;</span>
+                            <div class="widget-alert-text">
+                                <strong>Rappel</strong><br>
+                                Les rapports hebdomadaires seront a soumettre pendant votre stage.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Sections -->
+                <!-- Section: Mon profil & CV -->
+                <section id="section-profil" class="content-section active">
+                    <div class="dashboard-card">
+                        <h3 style="margin-bottom:16px; color:#1e293b;">Mon profil</h3>
+                        <div id="profileMessage" class="message hidden"></div>
+                        <form class="profile-form" id="profileForm">
+                            <div class="two-cols">
+                                <div class="form-group">
+                                    <label for="profNom">Nom</label>
+                                    <input type="text" id="profNom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profPrenom">Prenom</label>
+                                    <input type="text" id="profPrenom">
+                                </div>
+                            </div>
+                            <div class="two-cols">
+                                <div class="form-group">
+                                    <label for="profFiliere">Filiere</label>
+                                    <select id="profFiliere">
+                                        <option value="">-- Choisir --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profNiveau">Niveau academique</label>
+                                    <input type="text" id="profNiveau" placeholder="Ex: 3eme annee">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profBio">Bio</label>
+                                <textarea id="profBio" placeholder="Parlez un peu de vous..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-save">Enregistrer le profil</button>
+                        </form>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3 style="margin-bottom:16px; color:#1e293b;">Mon CV</h3>
+                        <div id="cvMessage" class="message hidden"></div>
+                        <div id="cvExisting" style="display:none;">
+                            <div class="cv-info">
+                                <span class="cv-icon">PDF</span>
+                                <span class="cv-name" id="cvFileName">cv.pdf</span>
+                                <button class="btn-replace" onclick="document.getElementById('cvInput').click()">Remplacer</button>
+                                <button class="btn-delete-cv" onclick="deleteCv()">Supprimer</button>
+                            </div>
+                        </div>
+                        <div id="cvUploadZone" class="cv-zone">
+                            <p>Glissez votre CV ici ou <label for="cvInput">parcourir</label></p>
+                            <p style="font-size:0.8rem; color:#94a3b8; margin-top:6px;">PDF uniquement, 5 Mo max</p>
+                            <input type="file" id="cvInput" accept="application/pdf">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Offres de stage -->
+                <section id="section-offres" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128188;</div>
+                            <div class="coming-soon-text">Offres de stage</div>
+                            <div class="coming-soon-sub">Parcourez et postulez aux offres de stage disponibles. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Mes candidatures -->
+                <section id="section-candidatures" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128203;</div>
+                            <div class="coming-soon-text">Mes candidatures</div>
+                            <div class="coming-soon-sub">Suivez l'avancement de vos candidatures. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Mon stage -->
+                <section id="section-stage" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#127891;</div>
+                            <div class="coming-soon-text">Mon stage</div>
+                            <div class="coming-soon-sub">Consultez les details de votre stage en cours. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Rapports hebdo -->
+                <section id="section-rapports-hebdo" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128221;</div>
+                            <div class="coming-soon-text">Rapports hebdomadaires</div>
+                            <div class="coming-soon-sub">Soumettez vos rapports de progression chaque semaine. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Rapport final -->
+                <section id="section-rapport-final" class="content-section">
+                    <div class="dashboard-card">
+                        <div class="coming-soon">
+                            <div class="coming-soon-icon">&#128214;</div>
+                            <div class="coming-soon-text">Rapport final</div>
+                            <div class="coming-soon-sub">Redigez et soumettez votre rapport de stage final. Disponible prochainement.</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
-    </main>
+    </div>
 
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
@@ -36,7 +280,179 @@
                 document.getElementById('userName').textContent = user.email;
                 document.getElementById('userEmail').textContent = user.email;
             }
+            initSidebar();
+            loadFilieres();
+            loadProfile();
         });
+
+        // === Sidebar Navigation ===
+        function initSidebar() {
+            var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    document.querySelectorAll('.content-section').forEach(function(s) {
+                        s.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    var sectionId = this.getAttribute('data-section');
+                    var section = document.getElementById(sectionId);
+                    if (section) section.classList.add('active');
+                    closeSidebar();
+                });
+            });
+        }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('open');
+        }
+
+        function closeSidebar() {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.querySelector('.sidebar-overlay').classList.remove('open');
+        }
+
+        document.querySelector('.sidebar-overlay').addEventListener('click', closeSidebar);
+
+        // === Load Filieres ===
+        async function loadFilieres() {
+            try {
+                var filieres = await apiFetch('/filieres');
+                var select = document.getElementById('profFiliere');
+                filieres.forEach(function (f) {
+                    var opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = f.nom;
+                    select.appendChild(opt);
+                });
+            } catch (e) { /* ignore */ }
+        }
+
+        // === Load Profile ===
+        async function loadProfile() {
+            try {
+                var profile = await apiFetch('/etudiants/me');
+                document.getElementById('profNom').value = profile.nom || '';
+                document.getElementById('profPrenom').value = profile.prenom || '';
+                document.getElementById('profNiveau').value = profile.niveauAcademique || '';
+                document.getElementById('profBio').value = profile.bio || '';
+                if (profile.filiereId) {
+                    document.getElementById('profFiliere').value = profile.filiereId;
+                }
+                if (profile.cvPath) {
+                    document.getElementById('cvExisting').style.display = 'block';
+                    document.getElementById('cvUploadZone').style.display = 'none';
+                    document.getElementById('cvFileName').textContent = profile.cvPath.split('/').pop();
+                }
+            } catch (e) { /* profile might not exist yet */ }
+        }
+
+        // === Profile Form ===
+        document.getElementById('profileForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var data = {
+                nom: document.getElementById('profNom').value.trim() || null,
+                prenom: document.getElementById('profPrenom').value.trim() || null,
+                filiereId: document.getElementById('profFiliere').value || null,
+                niveauAcademique: document.getElementById('profNiveau').value.trim() || null,
+                bio: document.getElementById('profBio').value.trim() || null
+            };
+            if (data.filiereId) data.filiereId = parseInt(data.filiereId);
+
+            try {
+                await apiFetch('/etudiants/me', {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+                showMsg('profileMessage', 'Profil enregistre avec succes.', 'success');
+            } catch (err) {
+                showMsg('profileMessage', err.message || 'Erreur lors de la sauvegarde.', 'error');
+            }
+        });
+
+        // === CV Upload ===
+        var cvInput = document.getElementById('cvInput');
+        var cvZone = document.getElementById('cvUploadZone');
+
+        cvInput.addEventListener('change', function () {
+            if (this.files.length > 0) uploadCv(this.files[0]);
+        });
+
+        cvZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            cvZone.classList.add('dragover');
+        });
+        cvZone.addEventListener('dragleave', function () {
+            cvZone.classList.remove('dragover');
+        });
+        cvZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            cvZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) uploadCv(e.dataTransfer.files[0]);
+        });
+
+        async function uploadCv(file) {
+            var formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                var token = localStorage.getItem('jwt_token');
+                var resp = await fetch('/api/etudiants/me/cv', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    body: formData
+                });
+
+                if (!resp.ok) {
+                    var err = await resp.json().catch(function () { return { message: 'Erreur inconnue' }; });
+                    throw err;
+                }
+
+                var data = await resp.json();
+                showMsg('cvMessage', 'CV televerse avec succes !', 'success');
+                document.getElementById('cvExisting').style.display = 'block';
+                document.getElementById('cvUploadZone').style.display = 'none';
+                document.getElementById('cvFileName').textContent = data.cvPath.split('/').pop();
+                cvInput.value = '';
+            } catch (err) {
+                showMsg('cvMessage', err.message || 'Erreur lors du televersement.', 'error');
+            }
+        }
+
+        // === CV Delete ===
+        async function deleteCv() {
+            if (!confirm('Voulez-vous vraiment supprimer votre CV ?')) return;
+
+            try {
+                var token = localStorage.getItem('jwt_token');
+                var resp = await fetch('/api/etudiants/me/cv', {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (!resp.ok) {
+                    var err = await resp.json().catch(function () { return { message: 'Erreur inconnue' }; });
+                    throw err;
+                }
+
+                showMsg('cvMessage', 'CV supprime avec succes.', 'success');
+                document.getElementById('cvExisting').style.display = 'none';
+                document.getElementById('cvUploadZone').style.display = 'block';
+            } catch (err) {
+                showMsg('cvMessage', err.message || 'Erreur lors de la suppression.', 'error');
+            }
+        }
+
+        // === Utils ===
+        function showMsg(id, text, type) {
+            var div = document.getElementById(id);
+            div.textContent = text;
+            div.className = 'message ' + type;
+            div.classList.remove('hidden');
+            setTimeout(function () { div.classList.add('hidden'); }, 4000);
+        }
     </script>
 </body>
 </html>

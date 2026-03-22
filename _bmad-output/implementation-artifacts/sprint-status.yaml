@@ -23,6 +23,6 @@ development_status:
   1-4-deconnexion-securisee: "review"
   1-5-attribuer-roles: "review"
   1-6-gerer-comptes-utilisateurs: "review"
-  1-7-televerser-cv: "ready-for-dev"
+  1-7-televerser-cv: "review"
   1-8-publier-offre-stage: "ready-for-dev"
   1-9-modifier-supprimer-offre: "ready-for-dev"
