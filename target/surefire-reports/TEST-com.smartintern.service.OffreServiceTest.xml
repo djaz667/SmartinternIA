@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.smartintern.security.JwtTokenProviderTest" time="0.224" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.smartintern.service.OffreServiceTest" time="0.149" tests="11" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -60,10 +60,15 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="getUserIdFromToken_returnsCorrectId" classname="com.smartintern.security.JwtTokenProviderTest" time="0.204"/>
-  <testcase name="generateToken_containsExpectedClaims" classname="com.smartintern.security.JwtTokenProviderTest" time="0.004"/>
-  <testcase name="validateToken_invalidToken_returnsFalse" classname="com.smartintern.security.JwtTokenProviderTest" time="0.006"/>
-  <testcase name="validateToken_validToken_returnsTrue" classname="com.smartintern.security.JwtTokenProviderTest" time="0.002"/>
-  <testcase name="getRoleFromToken_returnsCorrectRole" classname="com.smartintern.security.JwtTokenProviderTest" time="0.003"/>
-  <testcase name="validateToken_tamperedToken_returnsFalse" classname="com.smartintern.security.JwtTokenProviderTest" time="0.002"/>
+  <testcase name="getMesOffres_returnsEntrepriseOffres" classname="com.smartintern.service.OffreServiceTest" time="0.107"/>
+  <testcase name="createOffre_userNonTrouve_throws404" classname="com.smartintern.service.OffreServiceTest" time="0.003"/>
+  <testcase name="getOffreById_notFound_throws404" classname="com.smartintern.service.OffreServiceTest" time="0.004"/>
+  <testcase name="createOffre_valid_returnsOffreResponse" classname="com.smartintern.service.OffreServiceTest" time="0.009"/>
+  <testcase name="getMesOffres_entrepriseNonTrouvee_throws404" classname="com.smartintern.service.OffreServiceTest" time="0.004"/>
+  <testcase name="getOffresActives_returnsActiveOffres" classname="com.smartintern.service.OffreServiceTest" time="0.003"/>
+  <testcase name="createOffre_competenceInvalide_throws404" classname="com.smartintern.service.OffreServiceTest" time="0.003"/>
+  <testcase name="createOffre_entrepriseNonTrouvee_throws404" classname="com.smartintern.service.OffreServiceTest" time="0.003"/>
+  <testcase name="createOffre_compteNonApprouve_throws403" classname="com.smartintern.service.OffreServiceTest" time="0.005"/>
+  <testcase name="getOffreById_found_returnsResponse" classname="com.smartintern.service.OffreServiceTest" time="0.001"/>
+  <testcase name="createOffre_sansRemuneration_ok" classname="com.smartintern.service.OffreServiceTest" time="0.003"/>
 </testsuite>

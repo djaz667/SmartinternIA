@@ -6,6 +6,65 @@
     <title>Dashboard Entreprise - SmartIntern AI</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        .offre-form .form-group { margin-bottom: 14px; }
+        .offre-form label {
+            display: block; font-weight: 600; margin-bottom: 4px;
+            color: #475569; font-size: 0.88rem;
+        }
+        .offre-form input, .offre-form select, .offre-form textarea {
+            width: 100%; padding: 9px 12px; border: 1px solid #e2e8f0;
+            border-radius: 8px; font-size: 0.88rem; background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .offre-form textarea { resize: vertical; min-height: 100px; }
+        .offre-form input:focus, .offre-form select:focus, .offre-form textarea:focus {
+            outline: none; border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .btn-publish {
+            background: #3b82f6; color: #fff; border: none;
+            padding: 10px 24px; border-radius: 8px; font-weight: 600;
+            cursor: pointer; font-size: 0.88rem; transition: background 0.15s;
+        }
+        .btn-publish:hover { background: #2563eb; }
+        .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .two-cols { grid-template-columns: 1fr; } }
+        /* Multi-select competences */
+        .competence-grid {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;
+        }
+        .competence-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px; border: 1px solid #e2e8f0; border-radius: 20px;
+            font-size: 0.82rem; cursor: pointer; transition: all 0.15s;
+            background: #fff; color: #475569; user-select: none;
+        }
+        .competence-chip.selected {
+            background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; font-weight: 600;
+        }
+        .competence-chip:hover { border-color: #94a3b8; }
+        /* Offres table */
+        .offres-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        .offres-table th, .offres-table td {
+            padding: 10px 14px; text-align: left;
+            border-bottom: 1px solid #f1f5f9; font-size: 0.88rem;
+        }
+        .offres-table th { background: #f8fafc; font-weight: 600; color: #475569; }
+        .offres-table tr:hover { background: #f8fafc; }
+        .badge-active {
+            display: inline-block; padding: 2px 10px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 600; background: #d1fae5; color: #065f46;
+        }
+        .badge-inactive {
+            display: inline-block; padding: 2px 10px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 600; background: #f1f5f9; color: #475569;
+        }
+        .message { padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 14px; }
+        .message.success { background: #d1fae5; color: #065f46; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+        .message.hidden { display: none; }
+    </style>
 </head>
 <body>
     <div class="sidebar-overlay"></div>
@@ -16,6 +75,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-section-title">Recrutement</li>
                 <li><a href="#" data-section="section-offres" class="active"><span class="nav-icon">&#128196;</span> Mes offres</a></li>
+                <li><a href="#" data-section="section-publier"><span class="nav-icon">&#10133;</span> Publier une offre</a></li>
                 <li><a href="#" data-section="section-candidatures"><span class="nav-icon">&#128203;</span> Candidatures recues</a></li>
                 <li class="sidebar-section-title">Suivi</li>
                 <li><a href="#" data-section="section-stagiaires"><span class="nav-icon">&#128101;</span> Mes stagiaires</a></li>
@@ -45,7 +105,7 @@
                     <div class="stat-card">
                         <div class="stat-icon blue">&#128196;</div>
                         <div class="stat-info">
-                            <div class="stat-value">0</div>
+                            <div class="stat-value" id="statOffres">0</div>
                             <div class="stat-label">Offres actives</div>
                         </div>
                     </div>
@@ -65,36 +125,84 @@
                     </div>
                 </div>
 
-                <!-- Widgets -->
-                <div class="widgets-grid">
-                    <div class="widget-card">
-                        <div class="widget-title">&#128100; Top candidats recents</div>
-                        <ul class="widget-list">
-                            <li><span style="color:#94a3b8">Les candidatures seront affichees ici prochainement</span></li>
-                        </ul>
-                    </div>
-                    <div class="widget-card">
-                        <div class="widget-alert">
-                            <span class="widget-alert-icon">&#128161;</span>
-                            <div class="widget-alert-text">
-                                <strong>Astuce</strong><br>
-                                Publiez vos offres de stage pour recevoir des candidatures d'etudiants qualifies.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Content Sections -->
+                <!-- Section: Mes offres -->
                 <section id="section-offres" class="content-section active">
                     <div class="dashboard-card">
-                        <div class="coming-soon">
-                            <div class="coming-soon-icon">&#128196;</div>
-                            <div class="coming-soon-text">Mes offres de stage</div>
-                            <div class="coming-soon-sub">Publiez et gerez vos offres de stage. Disponible prochainement.</div>
+                        <h3 style="color:#1e293b; margin-bottom:16px;">Mes offres publiees</h3>
+                        <div id="offresLoading" style="text-align:center; padding:20px; color:#94a3b8;">Chargement...</div>
+                        <div id="offresEmpty" style="display:none; text-align:center; padding:30px; color:#94a3b8;">
+                            Aucune offre publiee. <a href="#" onclick="navigateTo('section-publier')" style="color:#3b82f6;">Publier votre premiere offre</a>
                         </div>
+                        <table class="offres-table" id="offresTable" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th>Titre</th>
+                                    <th>Domaine</th>
+                                    <th>Lieu</th>
+                                    <th>Duree</th>
+                                    <th>Competences</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="offresBody"></tbody>
+                        </table>
                     </div>
                 </section>
 
+                <!-- Section: Publier une offre -->
+                <section id="section-publier" class="content-section">
+                    <div class="dashboard-card">
+                        <h3 style="color:#1e293b; margin-bottom:16px;">Publier une nouvelle offre de stage</h3>
+                        <div id="publishMessage" class="message hidden"></div>
+                        <form class="offre-form" id="offreForm">
+                            <div class="two-cols">
+                                <div class="form-group">
+                                    <label for="offreTitre">Titre *</label>
+                                    <input type="text" id="offreTitre" placeholder="Ex: Developpeur Java Spring" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="offreDomaine">Domaine *</label>
+                                    <input type="text" id="offreDomaine" placeholder="Ex: Developpement Web" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="offreDescription">Description *</label>
+                                <textarea id="offreDescription" placeholder="Decrivez le stage, les missions, les objectifs..." required></textarea>
+                            </div>
+                            <div class="two-cols">
+                                <div class="form-group">
+                                    <label for="offreDuree">Duree *</label>
+                                    <input type="text" id="offreDuree" placeholder="Ex: 3 mois" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="offreLieu">Lieu *</label>
+                                    <input type="text" id="offreLieu" placeholder="Ex: Tunis" required>
+                                </div>
+                            </div>
+                            <div class="two-cols">
+                                <div class="form-group">
+                                    <label for="offreNiveau">Niveau requis *</label>
+                                    <input type="text" id="offreNiveau" placeholder="Ex: 3eme annee, Master 1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="offreRemuneration">Remuneration (optionnel)</label>
+                                    <input type="number" id="offreRemuneration" placeholder="Ex: 500" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Competences requises *</label>
+                                <div class="competence-grid" id="competenceGrid">
+                                    <span style="color:#94a3b8; font-size:0.85rem;">Chargement des competences...</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-publish">Publier l'offre</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Section: Candidatures recues -->
                 <section id="section-candidatures" class="content-section">
                     <div class="dashboard-card">
                         <div class="coming-soon">
@@ -105,6 +213,7 @@
                     </div>
                 </section>
 
+                <!-- Section: Mes stagiaires -->
                 <section id="section-stagiaires" class="content-section">
                     <div class="dashboard-card">
                         <div class="coming-soon">
@@ -115,6 +224,7 @@
                     </div>
                 </section>
 
+                <!-- Section: Evaluations -->
                 <section id="section-evaluations" class="content-section">
                     <div class="dashboard-card">
                         <div class="coming-soon">
@@ -131,6 +241,8 @@
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
     <script>
+        var selectedCompetenceIds = [];
+
         document.addEventListener('DOMContentLoaded', function () {
             checkAuth();
             var user = getCurrentUser();
@@ -139,8 +251,11 @@
                 document.getElementById('userEmail').textContent = user.email;
             }
             initSidebar();
+            loadCompetences();
+            loadMesOffres();
         });
 
+        // === Sidebar ===
         function initSidebar() {
             var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
             navLinks.forEach(function(link) {
@@ -159,6 +274,16 @@
             });
         }
 
+        function navigateTo(sectionId) {
+            var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+            navLinks.forEach(function(l) { l.classList.remove('active'); });
+            document.querySelectorAll('.content-section').forEach(function(s) { s.classList.remove('active'); });
+            var targetLink = document.querySelector('.sidebar-nav a[data-section="' + sectionId + '"]');
+            if (targetLink) targetLink.classList.add('active');
+            var section = document.getElementById(sectionId);
+            if (section) section.classList.add('active');
+        }
+
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('open');
             document.querySelector('.sidebar-overlay').classList.toggle('open');
@@ -170,6 +295,129 @@
         }
 
         document.querySelector('.sidebar-overlay').addEventListener('click', closeSidebar);
+
+        // === Load Competences ===
+        async function loadCompetences() {
+            try {
+                var competences = await apiFetch('/competences');
+                var grid = document.getElementById('competenceGrid');
+                grid.innerHTML = '';
+                competences.forEach(function(c) {
+                    var chip = document.createElement('span');
+                    chip.className = 'competence-chip';
+                    chip.textContent = c.nom;
+                    chip.setAttribute('data-id', c.id);
+                    chip.addEventListener('click', function() {
+                        var id = parseInt(this.getAttribute('data-id'));
+                        if (this.classList.contains('selected')) {
+                            this.classList.remove('selected');
+                            selectedCompetenceIds = selectedCompetenceIds.filter(function(x) { return x !== id; });
+                        } else {
+                            this.classList.add('selected');
+                            selectedCompetenceIds.push(id);
+                        }
+                    });
+                    grid.appendChild(chip);
+                });
+            } catch (e) {
+                document.getElementById('competenceGrid').innerHTML = '<span style="color:#ef4444; font-size:0.85rem;">Erreur de chargement</span>';
+            }
+        }
+
+        // === Load Mes Offres ===
+        async function loadMesOffres() {
+            var loading = document.getElementById('offresLoading');
+            var table = document.getElementById('offresTable');
+            var empty = document.getElementById('offresEmpty');
+
+            try {
+                var offres = await apiFetch('/offres/mes-offres');
+                loading.style.display = 'none';
+
+                // Update stat card
+                var activeCount = offres.filter(function(o) { return o.active; }).length;
+                document.getElementById('statOffres').textContent = activeCount;
+
+                if (offres.length === 0) {
+                    empty.style.display = 'block';
+                    return;
+                }
+
+                table.style.display = 'table';
+                var tbody = document.getElementById('offresBody');
+                tbody.innerHTML = '';
+
+                offres.forEach(function(o) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML =
+                        '<td><strong>' + escapeHtml(o.titre) + '</strong></td>' +
+                        '<td>' + escapeHtml(o.domaine) + '</td>' +
+                        '<td>' + escapeHtml(o.lieu) + '</td>' +
+                        '<td>' + escapeHtml(o.duree) + '</td>' +
+                        '<td>' + (o.competences || []).join(', ') + '</td>' +
+                        '<td><span class="' + (o.active ? 'badge-active' : 'badge-inactive') + '">' +
+                            (o.active ? 'Active' : 'Inactive') + '</span></td>' +
+                        '<td>' + (o.datePublication ? o.datePublication.substring(0, 10) : '-') + '</td>';
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                loading.textContent = 'Erreur lors du chargement des offres.';
+            }
+        }
+
+        // === Publish Offre ===
+        document.getElementById('offreForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (selectedCompetenceIds.length === 0) {
+                showMsg('publishMessage', 'Veuillez selectionner au moins une competence.', 'error');
+                return;
+            }
+
+            var remuneration = document.getElementById('offreRemuneration').value;
+            var data = {
+                titre: document.getElementById('offreTitre').value.trim(),
+                domaine: document.getElementById('offreDomaine').value.trim(),
+                description: document.getElementById('offreDescription').value.trim(),
+                duree: document.getElementById('offreDuree').value.trim(),
+                lieu: document.getElementById('offreLieu').value.trim(),
+                niveauRequis: document.getElementById('offreNiveau').value.trim(),
+                competenceIds: selectedCompetenceIds,
+                remuneration: remuneration ? parseFloat(remuneration) : null
+            };
+
+            try {
+                await apiFetch('/offres', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMsg('publishMessage', 'Offre publiee avec succes !', 'success');
+                document.getElementById('offreForm').reset();
+                selectedCompetenceIds = [];
+                document.querySelectorAll('.competence-chip.selected').forEach(function(c) {
+                    c.classList.remove('selected');
+                });
+                loadMesOffres();
+            } catch (err) {
+                showMsg('publishMessage', err.message || 'Erreur lors de la publication.', 'error');
+            }
+        });
+
+        // === Utils ===
+        function showMsg(id, text, type) {
+            var div = document.getElementById(id);
+            div.textContent = text;
+            div.className = 'message ' + type;
+            div.classList.remove('hidden');
+            setTimeout(function() { div.classList.add('hidden'); }, 4000);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            var div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
     </script>
 </body>
 </html>

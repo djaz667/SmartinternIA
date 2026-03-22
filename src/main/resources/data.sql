@@ -8,6 +8,23 @@ INSERT IGNORE INTO filieres (nom) VALUES ('Cybersécurité');
 INSERT IGNORE INTO filieres (nom) VALUES ('Data Science');
 INSERT IGNORE INTO filieres (nom) VALUES ('Génie Électrique');
 
+-- Competences techniques de base
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Java', 'Backend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Spring Boot', 'Backend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Python', 'Backend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Node.js', 'Backend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('SQL', 'Base de donnees');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('MySQL', 'Base de donnees');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('MongoDB', 'Base de donnees');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('HTML', 'Frontend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('CSS', 'Frontend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('JavaScript', 'Frontend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('React', 'Frontend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Angular', 'Frontend');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Docker', 'DevOps');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Git', 'DevOps');
+INSERT IGNORE INTO competences (nom, categorie) VALUES ('Machine Learning', 'IA');
+
 -- Comptes de test pré-approuvés (mot de passe: admin123 pour tous)
 -- Admin
 INSERT INTO users (email, mot_de_passe, role, statut_compte, date_creation, actif)

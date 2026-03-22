@@ -1,6 +1,6 @@
 # Story 1.8: Publier une offre de stage (EN-01)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -22,42 +22,42 @@ so that les étudiants puissent découvrir et postuler à mes opportunités.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 : Créer l'entité Offre et la table de jointure (AC: 2, 3, 6, 7)
-  - [ ] `model/Offre.java` : id, entreprise (ManyToOne), titre, domaine, description, duree, lieu, niveauRequis, remuneration (nullable), active (default true), datePublication
-  - [ ] Relation ManyToMany avec Competence via `offre_competence` (offre_id, competence_id)
-  - [ ] `model/Competence.java` : id, nom (unique), categorie (si pas déjà créé dans story 1-7)
-- [ ] Task 2 : Créer les repositories (AC: 5, 8)
-  - [ ] `OffreRepository.java` : findByEntrepriseId(Long entrepriseId), findByActiveTrue()
-  - [ ] `CompetenceRepository.java` : findByIdIn(List<Long> ids) (si pas déjà créé)
-- [ ] Task 3 : Créer les DTOs (AC: 1, 2, 3)
-  - [ ] `dto/offre/OffreRequest.java` : titre (@NotBlank), domaine (@NotBlank), description (@NotBlank), duree (@NotBlank), lieu (@NotBlank), niveauRequis (@NotBlank), competenceIds (@NotEmpty List<Long>), remuneration (nullable)
-  - [ ] `dto/offre/OffreResponse.java` : id, titre, domaine, description, duree, lieu, niveauRequis, remuneration, active, datePublication, entrepriseNom, competences (List<String>)
-- [ ] Task 4 : Implémenter OffreService.createOffre() (AC: 1, 4, 5, 6, 7)
-  - [ ] Récupérer l'entreprise associée au userId connecté
-  - [ ] Vérifier que le compte est APPROUVE
-  - [ ] Valider les competenceIds (doivent exister en BDD)
-  - [ ] Créer l'Offre avec entreprise, active=true, datePublication=now()
-  - [ ] Lier les compétences requises
-  - [ ] Sauvegarder et retourner OffreResponse
-- [ ] Task 5 : Implémenter OffreService.getMesOffres() (AC: 8)
-  - [ ] Récupérer les offres de l'entreprise connectée
-  - [ ] Retourner List<OffreResponse>
-- [ ] Task 6 : Créer OffreController (AC: 1, 8)
-  - [ ] POST `/api/offres` → createOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
-  - [ ] GET `/api/offres/mes-offres` → getMesOffres() [@PreAuthorize("hasRole('ENTREPRISE')")]
-  - [ ] GET `/api/offres` → getOffresActives() [accessible par ETUDIANT — pour Sprint 2 mais créer le endpoint maintenant]
-  - [ ] GET `/api/offres/{id}` → getOffreById() [authentifié]
-- [ ] Task 7 : Endpoint compétences admin (AC: 6)
-  - [ ] GET `/api/competences` → liste de toutes les compétences [authentifié]
-  - [ ] POST `/api/competences` → créer une compétence [ADMIN]
-  - [ ] `CompetenceController.java`
-  - [ ] `data.sql` : insérer des compétences de base (Java, Spring Boot, HTML, CSS, JavaScript, SQL, Python, React, Angular, etc.)
-- [ ] Task 8 : Interface entreprise — publier offre (AC: 9)
-  - [ ] Section "Publier une offre" dans dashboard-entreprise.html
-  - [ ] Formulaire avec tous les champs obligatoires
-  - [ ] Multi-select pour les compétences (charger depuis GET /api/competences)
-  - [ ] Section "Mes offres" affichant les offres publiées (tableau)
-  - [ ] Feedback succès/erreur après publication
+- [x] Task 1 : Créer l'entité Offre et la table de jointure (AC: 2, 3, 6, 7)
+  - [x] `model/Offre.java` : id, entreprise (ManyToOne), titre, domaine, description, duree, lieu, niveauRequis, remuneration (nullable), active (default true), datePublication
+  - [x] Relation ManyToMany avec Competence via `offre_competence` (offre_id, competence_id)
+  - [x] `model/Competence.java` : id, nom (unique), categorie (si pas déjà créé dans story 1-7)
+- [x] Task 2 : Créer les repositories (AC: 5, 8)
+  - [x] `OffreRepository.java` : findByEntrepriseId(Long entrepriseId), findByActiveTrue()
+  - [x] `CompetenceRepository.java` : findByIdIn(List<Long> ids) (si pas déjà créé)
+- [x] Task 3 : Créer les DTOs (AC: 1, 2, 3)
+  - [x] `dto/offre/OffreRequest.java` : titre (@NotBlank), domaine (@NotBlank), description (@NotBlank), duree (@NotBlank), lieu (@NotBlank), niveauRequis (@NotBlank), competenceIds (@NotEmpty List<Long>), remuneration (nullable)
+  - [x] `dto/offre/OffreResponse.java` : id, titre, domaine, description, duree, lieu, niveauRequis, remuneration, active, datePublication, entrepriseNom, competences (List<String>)
+- [x] Task 4 : Implémenter OffreService.createOffre() (AC: 1, 4, 5, 6, 7)
+  - [x] Récupérer l'entreprise associée au userId connecté
+  - [x] Vérifier que le compte est APPROUVE
+  - [x] Valider les competenceIds (doivent exister en BDD)
+  - [x] Créer l'Offre avec entreprise, active=true, datePublication=now()
+  - [x] Lier les compétences requises
+  - [x] Sauvegarder et retourner OffreResponse
+- [x] Task 5 : Implémenter OffreService.getMesOffres() (AC: 8)
+  - [x] Récupérer les offres de l'entreprise connectée
+  - [x] Retourner List<OffreResponse>
+- [x] Task 6 : Créer OffreController (AC: 1, 8)
+  - [x] POST `/api/offres` → createOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
+  - [x] GET `/api/offres/mes-offres` → getMesOffres() [@PreAuthorize("hasRole('ENTREPRISE')")]
+  - [x] GET `/api/offres` → getOffresActives() [accessible par ETUDIANT — pour Sprint 2 mais créer le endpoint maintenant]
+  - [x] GET `/api/offres/{id}` → getOffreById() [authentifié]
+- [x] Task 7 : Endpoint compétences admin (AC: 6)
+  - [x] GET `/api/competences` → liste de toutes les compétences [authentifié]
+  - [x] POST `/api/competences` → créer une compétence [ADMIN]
+  - [x] `CompetenceController.java`
+  - [x] `data.sql` : insérer des compétences de base (Java, Spring Boot, HTML, CSS, JavaScript, SQL, Python, React, Angular, etc.)
+- [x] Task 8 : Interface entreprise — publier offre (AC: 9)
+  - [x] Section "Publier une offre" dans dashboard-entreprise.html
+  - [x] Formulaire avec tous les champs obligatoires
+  - [x] Multi-select pour les compétences (charger depuis GET /api/competences)
+  - [x] Section "Mes offres" affichant les offres publiées (tableau)
+  - [x] Feedback succès/erreur après publication
 
 ## Dev Notes
 
@@ -102,9 +102,39 @@ Insérer dans `data.sql` :
 - [Source: prd.md#FR13] - Publier une offre avec champs obligatoires
 - [Source: prd.md#FR16] - Publication qu'après validation du compte
 
+## Change Log
+
+- 2026-03-21: Implemented all 8 tasks — entities, repos, DTOs, service, controllers, data.sql seed, dashboard UI. 11 unit tests added (OffreServiceTest). Total: 84 tests passing, 0 failures.
+
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Debug Log References
+N/A — no debug issues encountered
+
 ### Completion Notes List
+- All 9 acceptance criteria met
+- Offre entity with ManyToMany competences via offre_competence join table
+- OffreService checks APPROUVE status before allowing publication (ForbiddenException if not)
+- 4 REST endpoints: POST /api/offres, GET /api/offres, GET /api/offres/mes-offres, GET /api/offres/{id}
+- CompetenceController: GET /api/competences + POST /api/competences (ADMIN only)
+- 15 competences seeded in data.sql (Java, Spring Boot, Python, Node.js, SQL, MySQL, MongoDB, HTML, CSS, JavaScript, React, Angular, Docker, Git, Machine Learning)
+- Dashboard-entreprise.html: publish form with competence chip multi-select + offres table with live data
+- 11 unit tests in OffreServiceTest covering all service methods and error paths
+- 84 total tests passing (73 existing + 11 new)
+
 ### File List
+- `src/main/java/com/smartintern/model/Competence.java` (NEW)
+- `src/main/java/com/smartintern/model/Offre.java` (NEW)
+- `src/main/java/com/smartintern/repository/CompetenceRepository.java` (NEW)
+- `src/main/java/com/smartintern/repository/OffreRepository.java` (NEW)
+- `src/main/java/com/smartintern/dto/offre/OffreRequest.java` (NEW)
+- `src/main/java/com/smartintern/dto/offre/OffreResponse.java` (NEW)
+- `src/main/java/com/smartintern/service/OffreService.java` (NEW)
+- `src/main/java/com/smartintern/controller/OffreController.java` (NEW)
+- `src/main/java/com/smartintern/controller/CompetenceController.java` (NEW)
+- `src/main/resources/data.sql` (MODIFIED — added 15 competences)
+- `src/main/resources/static/pages/dashboard-entreprise.html` (MODIFIED — publish form + offres table)
+- `src/test/java/com/smartintern/service/OffreServiceTest.java` (NEW — 11 tests)

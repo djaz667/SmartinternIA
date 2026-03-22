@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.smartintern.SmartInternApplicationTests" time="4.877" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.smartintern.SmartInternApplicationTests" time="5.463" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -17,7 +17,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="FR"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-19\bin"/>
-    <property name="sun.java.command" value="C:\Users\djazi\AppData\Local\Temp\surefire2662172715007165039\surefirebooter-20260322003615162_3.jar C:\Users\djazi\AppData\Local\Temp\surefire2662172715007165039 2026-03-22T00-36-15_042-jvmRun1 surefire-20260322003615162_1tmp surefire_0-20260322003615162_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\djazi\AppData\Local\Temp\surefire1450850210952228181\surefirebooter-20260322151427858_3.jar C:\Users\djazi\AppData\Local\Temp\surefire1450850210952228181 2026-03-22T15-14-27_745-jvmRun1 surefire-20260322151427858_1tmp surefire_0-20260322151427858_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\djazi\SmartinternIA\target\test-classes;C:\Users\djazi\SmartinternIA\target\classes;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.2.3\spring-boot-starter-web-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter\3.2.3\spring-boot-starter-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot\3.2.3\spring-boot-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.2.3\spring-boot-autoconfigure-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.2.3\spring-boot-starter-logging-3.2.3.jar;C:\Users\djazi\.m2\repository\ch\qos\logback\logback-classic\1.4.14\logback-classic-1.4.14.jar;C:\Users\djazi\.m2\repository\ch\qos\logback\logback-core\1.4.14\logback-core-1.4.14.jar;C:\Users\djazi\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.21.1\log4j-to-slf4j-2.21.1.jar;C:\Users\djazi\.m2\repository\org\apache\logging\log4j\log4j-api\2.21.1\log4j-api-2.21.1.jar;C:\Users\djazi\.m2\repository\org\slf4j\jul-to-slf4j\2.0.12\jul-to-slf4j-2.0.12.jar;C:\Users\djazi\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\djazi\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.2.3\spring-boot-starter-json-3.2.3.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.15.4\jackson-datatype-jdk8-2.15.4.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.15.4\jackson-datatype-jsr310-2.15.4.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.15.4\jackson-module-parameter-names-2.15.4.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.2.3\spring-boot-starter-tomcat-3.2.3.jar;C:\Users\djazi\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.19\tomcat-embed-core-10.1.19.jar;C:\Users\djazi\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.19\tomcat-embed-websocket-10.1.19.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-web\6.1.4\spring-web-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-beans\6.1.4\spring-beans-6.1.4.jar;C:\Users\djazi\.m2\repository\io\micrometer\micrometer-observation\1.12.3\micrometer-observation-1.12.3.jar;C:\Users\djazi\.m2\repository\io\micrometer\micrometer-commons\1.12.3\micrometer-commons-1.12.3.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-webmvc\6.1.4\spring-webmvc-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-context\6.1.4\spring-context-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-expression\6.1.4\spring-expression-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-security\3.2.3\spring-boot-starter-security-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-aop\6.1.4\spring-aop-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\security\spring-security-config\6.2.2\spring-security-config-6.2.2.jar;C:\Users\djazi\.m2\repository\org\springframework\security\spring-security-web\6.2.2\spring-security-web-6.2.2.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\3.2.3\spring-boot-starter-data-jpa-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.2.3\spring-boot-starter-aop-3.2.3.jar;C:\Users\djazi\.m2\repository\org\aspectj\aspectjweaver\1.9.21\aspectjweaver-1.9.21.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\3.2.3\spring-boot-starter-jdbc-3.2.3.jar;C:\Users\djazi\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-jdbc\6.1.4\spring-jdbc-6.1.4.jar;C:\Users\djazi\.m2\repository\org\hibernate\orm\hibernate-core\6.4.4.Final\hibernate-core-6.4.4.Final.jar;C:\Users\djazi\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\djazi\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\djazi\.m2\repository\org\jboss\logging\jboss-logging\3.5.3.Final\jboss-logging-3.5.3.Final.jar;C:\Users\djazi\.m2\repository\org\hibernate\common\hibernate-commons-annotations\6.0.6.Final\hibernate-commons-annotations-6.0.6.Final.jar;C:\Users\djazi\.m2\repository\io\smallrye\jandex\3.1.2\jandex-3.1.2.jar;C:\Users\djazi\.m2\repository\com\fasterxml\classmate\1.6.0\classmate-1.6.0.jar;C:\Users\djazi\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\djazi\.m2\repository\org\glassfish\jaxb\jaxb-runtime\4.0.4\jaxb-runtime-4.0.4.jar;C:\Users\djazi\.m2\repository\org\glassfish\jaxb\jaxb-core\4.0.4\jaxb-core-4.0.4.jar;C:\Users\djazi\.m2\repository\org\eclipse\angus\angus-activation\2.0.1\angus-activation-2.0.1.jar;C:\Users\djazi\.m2\repository\org\glassfish\jaxb\txw2\4.0.4\txw2-4.0.4.jar;C:\Users\djazi\.m2\repository\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\djazi\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\djazi\.m2\repository\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\djazi\.m2\repository\org\springframework\data\spring-data-jpa\3.2.3\spring-data-jpa-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\data\spring-data-commons\3.2.3\spring-data-commons-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-orm\6.1.4\spring-orm-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-tx\6.1.4\spring-tx-6.1.4.jar;C:\Users\djazi\.m2\repository\org\slf4j\slf4j-api\2.0.12\slf4j-api-2.0.12.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-aspects\6.1.4\spring-aspects-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-validation\3.2.3\spring-boot-starter-validation-3.2.3.jar;C:\Users\djazi\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.19\tomcat-embed-el-10.1.19.jar;C:\Users\djazi\.m2\repository\org\hibernate\validator\hibernate-validator\8.0.1.Final\hibernate-validator-8.0.1.Final.jar;C:\Users\djazi\.m2\repository\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\djazi\.m2\repository\com\mysql\mysql-connector-j\8.3.0\mysql-connector-j-8.3.0.jar;C:\Users\djazi\.m2\repository\io\jsonwebtoken\jjwt-api\0.12.5\jjwt-api-0.12.5.jar;C:\Users\djazi\.m2\repository\io\jsonwebtoken\jjwt-impl\0.12.5\jjwt-impl-0.12.5.jar;C:\Users\djazi\.m2\repository\io\jsonwebtoken\jjwt-jackson\0.12.5\jjwt-jackson-0.12.5.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.15.4\jackson-databind-2.15.4.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.4\jackson-annotations-2.15.4.jar;C:\Users\djazi\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.4\jackson-core-2.15.4.jar;C:\Users\djazi\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.2.3\spring-boot-starter-test-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-test\3.2.3\spring-boot-test-3.2.3.jar;C:\Users\djazi\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.2.3\spring-boot-test-autoconfigure-3.2.3.jar;C:\Users\djazi\.m2\repository\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\djazi\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.1\jakarta.xml.bind-api-4.0.1.jar;C:\Users\djazi\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.2\jakarta.activation-api-2.1.2.jar;C:\Users\djazi\.m2\repository\net\minidev\json-smart\2.5.0\json-smart-2.5.0.jar;C:\Users\djazi\.m2\repository\net\minidev\accessors-smart\2.5.0\accessors-smart-2.5.0.jar;C:\Users\djazi\.m2\repository\org\ow2\asm\asm\9.3\asm-9.3.jar;C:\Users\djazi\.m2\repository\org\assertj\assertj-core\3.24.2\assertj-core-3.24.2.jar;C:\Users\djazi\.m2\repository\org\awaitility\awaitility\4.2.0\awaitility-4.2.0.jar;C:\Users\djazi\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\djazi\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.2\junit-jupiter-5.10.2.jar;C:\Users\djazi\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\djazi\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\djazi\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\djazi\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\djazi\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.2\junit-jupiter-params-5.10.2.jar;C:\Users\djazi\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\djazi\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\djazi\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\djazi\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.12\byte-buddy-agent-1.14.12.jar;C:\Users\djazi\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\djazi\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;C:\Users\djazi\.m2\repository\org\skyscreamer\jsonassert\1.5.1\jsonassert-1.5.1.jar;C:\Users\djazi\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-core\6.1.4\spring-core-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-jcl\6.1.4\spring-jcl-6.1.4.jar;C:\Users\djazi\.m2\repository\org\springframework\spring-test\6.1.4\spring-test-6.1.4.jar;C:\Users\djazi\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\djazi\.m2\repository\org\springframework\security\spring-security-test\6.2.2\spring-security-test-6.2.2.jar;C:\Users\djazi\.m2\repository\org\springframework\security\spring-security-core\6.2.2\spring-security-core-6.2.2.jar;C:\Users\djazi\.m2\repository\org\springframework\security\spring-security-crypto\6.2.2\spring-security-crypto-6.2.2.jar;C:\Users\djazi\.m2\repository\com\h2database\h2\2.2.224\h2-2.2.224.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -35,7 +35,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="C:\Users\djazi\AppData\Local\Temp\surefire2662172715007165039\surefirebooter-20260322003615162_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\djazi\AppData\Local\Temp\surefire1450850210952228181\surefirebooter-20260322151427858_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="19.0.2+7-44"/>
@@ -54,7 +54,7 @@
     <property name="user.dir" value="C:\Users\djazi\SmartinternIA"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="36076"/>
+    <property name="PID" value="46116"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="Cp1252"/>
@@ -67,9 +67,9 @@
     <property name="java.class.version" value="63.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[SmartIntern AI] "/>
   </properties>
-  <testcase name="contextLoads" classname="com.smartintern.SmartInternApplicationTests" time="0.016">
-    <system-out><![CDATA[00:36:18.843 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.smartintern.SmartInternApplicationTests]: SmartInternApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-00:36:18.937 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.smartintern.SmartInternApplication for test class com.smartintern.SmartInternApplicationTests
+  <testcase name="contextLoads" classname="com.smartintern.SmartInternApplicationTests" time="0.015">
+    <system-out><![CDATA[15:14:32.083 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.smartintern.SmartInternApplicationTests]: SmartInternApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:14:32.194 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.smartintern.SmartInternApplication for test class com.smartintern.SmartInternApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -79,19 +79,21 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.3)
 
-2026-03-22T00:36:19.279+01:00  INFO 36076 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : Starting SmartInternApplicationTests using Java 19.0.2 with PID 36076 (started by djazi in C:\Users\djazi\SmartinternIA)
-2026-03-22T00:36:19.280+01:00  INFO 36076 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : The following 1 profile is active: "test"
-2026-03-22T00:36:19.856+01:00  INFO 36076 --- [SmartIntern AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-03-22T00:36:19.935+01:00  INFO 36076 --- [SmartIntern AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 6 JPA repository interfaces.
-2026-03-22T00:36:20.604+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-22T00:36:20.801+01:00  INFO 36076 --- [SmartIntern AI] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
-2026-03-22T00:36:20.843+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-03-22T00:36:20.931+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-03-22T00:36:20.959+01:00  INFO 36076 --- [SmartIntern AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-03-22T00:36:21.149+01:00  INFO 36076 --- [SmartIntern AI] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
-2026-03-22T00:36:21.150+01:00  INFO 36076 --- [SmartIntern AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-03-22T00:36:21.177+01:00  WARN 36076 --- [SmartIntern AI] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-22T00:36:21.838+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-22T15:14:32.616+01:00  INFO 46116 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : Starting SmartInternApplicationTests using Java 19.0.2 with PID 46116 (started by djazi in C:\Users\djazi\SmartinternIA)
+2026-03-22T15:14:32.617+01:00  INFO 46116 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : The following 1 profile is active: "test"
+2026-03-22T15:14:33.252+01:00  INFO 46116 --- [SmartIntern AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-22T15:14:33.323+01:00  INFO 46116 --- [SmartIntern AI] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 64 ms. Found 8 JPA repository interfaces.
+2026-03-22T15:14:34.082+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-22T15:14:34.223+01:00  INFO 46116 --- [SmartIntern AI] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-22T15:14:34.263+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-22T15:14:34.369+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-22T15:14:34.396+01:00  INFO 46116 --- [SmartIntern AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-22T15:14:34.603+01:00  INFO 46116 --- [SmartIntern AI] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-03-22T15:14:34.605+01:00  INFO 46116 --- [SmartIntern AI] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-22T15:14:34.630+01:00  WARN 46116 --- [SmartIntern AI] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-22T15:14:35.550+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    drop table if exists competences cascade 
 Hibernate: 
     drop table if exists encadrants_academiques cascade 
 Hibernate: 
@@ -103,7 +105,18 @@ Hibernate:
 Hibernate: 
     drop table if exists filieres cascade 
 Hibernate: 
+    drop table if exists offre_competence cascade 
+Hibernate: 
+    drop table if exists offres cascade 
+Hibernate: 
     drop table if exists users cascade 
+Hibernate: 
+    create table competences (
+        id bigint generated by default as identity,
+        categorie varchar(255),
+        nom varchar(255) not null unique,
+        primary key (id)
+    )
 Hibernate: 
     create table encadrants_academiques (
         id bigint generated by default as identity,
@@ -154,6 +167,27 @@ Hibernate:
         primary key (id)
     )
 Hibernate: 
+    create table offre_competence (
+        competence_id bigint not null,
+        offre_id bigint not null,
+        primary key (competence_id, offre_id)
+    )
+Hibernate: 
+    create table offres (
+        active boolean not null,
+        remuneration numeric(38,2),
+        date_publication timestamp(6) not null,
+        entreprise_id bigint not null,
+        id bigint generated by default as identity,
+        description TEXT not null,
+        domaine varchar(255) not null,
+        duree varchar(255) not null,
+        lieu varchar(255) not null,
+        niveau_requis varchar(255) not null,
+        titre varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
     create table users (
         actif boolean not null,
         date_creation timestamp(6) not null,
@@ -196,11 +230,26 @@ Hibernate:
        add constraint FKsgxlwybt9svpg1vi17i44695h 
        foreign key (user_id) 
        references users
-2026-03-22T00:36:21.887+01:00  INFO 36076 --- [SmartIntern AI] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-03-22T00:36:22.889+01:00  WARN 36076 --- [SmartIntern AI] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-22T00:36:23.040+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
-2026-03-22T00:36:23.242+01:00  INFO 36076 --- [SmartIntern AI] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1d5a2267, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42d6aa88, org.springframework.security.web.context.SecurityContextHolderFilter@3dbdc1f6, org.springframework.security.web.header.HeaderWriterFilter@37533190, org.springframework.web.filter.CorsFilter@751661b, org.springframework.security.web.authentication.logout.LogoutFilter@652f3a8c, com.smartintern.security.JwtAuthenticationFilter@78cb1a92, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ce45045, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@78c9502c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@72018ba5, org.springframework.security.web.session.SessionManagementFilter@69a12179, org.springframework.security.web.access.ExceptionTranslationFilter@9b2ce79, org.springframework.security.web.access.intercept.AuthorizationFilter@6697389c]
-2026-03-22T00:36:23.650+01:00  INFO 36076 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : Started SmartInternApplicationTests in 4.633 seconds (process running for 8.364)
+Hibernate: 
+    alter table if exists offre_competence 
+       add constraint FKjnomtvct14nix391a8gi3oow7 
+       foreign key (competence_id) 
+       references competences
+Hibernate: 
+    alter table if exists offre_competence 
+       add constraint FKekokvyn03otfmfod6ha45iy26 
+       foreign key (offre_id) 
+       references offres
+Hibernate: 
+    alter table if exists offres 
+       add constraint FK9hf923m48chb4p9vy0x38f7xo 
+       foreign key (entreprise_id) 
+       references entreprises
+2026-03-22T15:14:35.628+01:00  INFO 46116 --- [SmartIntern AI] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-22T15:14:36.648+01:00  WARN 46116 --- [SmartIntern AI] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-22T15:14:36.799+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-03-22T15:14:37.010+01:00  INFO 46116 --- [SmartIntern AI] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@445eed0b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@481f2acb, org.springframework.security.web.context.SecurityContextHolderFilter@5d8c9945, org.springframework.security.web.header.HeaderWriterFilter@6e1134e1, org.springframework.web.filter.CorsFilter@2a201aa9, org.springframework.security.web.authentication.logout.LogoutFilter@668b1faf, com.smartintern.security.JwtAuthenticationFilter@413069a0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6dc4b990, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4e74adb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5402b18c, org.springframework.security.web.session.SessionManagementFilter@410308ff, org.springframework.security.web.access.ExceptionTranslationFilter@32200389, org.springframework.security.web.access.intercept.AuthorizationFilter@721fda59]
+2026-03-22T15:14:37.434+01:00  INFO 46116 --- [SmartIntern AI] [           main] c.s.SmartInternApplicationTests          : Started SmartInternApplicationTests in 5.139 seconds (process running for 9.373)
 ]]></system-out>
   </testcase>
 </testsuite>
