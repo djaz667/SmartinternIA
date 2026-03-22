@@ -50,6 +50,27 @@ public class OffreController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ENTREPRISE')")
+    public ResponseEntity<OffreResponse> updateOffre(
+            @PathVariable Long id,
+            @Valid @RequestBody OffreRequest request,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long userId = resolveUserId(userDetails);
+        OffreResponse response = offreService.updateOffre(userId, id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ENTREPRISE')")
+    public ResponseEntity<Void> deleteOffre(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long userId = resolveUserId(userDetails);
+        offreService.deleteOffre(userId, id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<OffreResponse> getOffreById(@PathVariable Long id) {

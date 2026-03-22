@@ -78,10 +78,56 @@ public class OffreService {
                 .toList();
     }
 
+    @Transactional
+    public OffreResponse updateOffre(Long userId, Long offreId, OffreRequest request) {
+        Offre offre = offreRepository.findById(offreId)
+                .orElseThrow(() -> new ResourceNotFoundException("Offre non trouvee"));
+
+        checkOwnership(offre, userId);
+
+
+        List<Competence> competences = competenceRepository.findByIdIn(request.getCompetenceIds());
+        if (competences.size() != request.getCompetenceIds().size()) {
+            throw new ResourceNotFoundException("Une ou plusieurs competences n'existent pas");
+        }
+
+        offre.setTitre(request.getTitre());
+        offre.setDomaine(request.getDomaine());
+        offre.setDescription(request.getDescription());
+        offre.setDuree(request.getDuree());
+        offre.setLieu(request.getLieu());
+        offre.setNiveauRequis(request.getNiveauRequis());
+        offre.setRemuneration(request.getRemuneration());
+        offre.getCompetences().clear();
+        offre.getCompetences().addAll(competences);
+
+        offreRepository.save(offre);
+        return toResponse(offre);
+    }
+
+    @Transactional
+    public void deleteOffre(Long userId, Long offreId) {
+        Offre offre = offreRepository.findById(offreId)
+                .orElseThrow(() -> new ResourceNotFoundException("Offre non trouvee"));
+
+        checkOwnership(offre, userId);
+
+        offre.setActive(false);
+        offreRepository.save(offre);
+    }
+
     public OffreResponse getOffreById(Long id) {
         Offre offre = offreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Offre non trouvee"));
         return toResponse(offre);
+    }
+
+    private void checkOwnership(Offre offre, Long userId) {
+        Entreprise entreprise = entrepriseRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profil entreprise non trouve"));
+        if (!offre.getEntreprise().getId().equals(entreprise.getId())) {
+            throw new ForbiddenException("Vous ne pouvez modifier que vos propres offres");
+        }
     }
 
     private OffreResponse toResponse(Offre offre) {

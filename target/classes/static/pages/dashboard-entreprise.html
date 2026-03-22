@@ -64,6 +64,44 @@
         .message.success { background: #d1fae5; color: #065f46; }
         .message.error { background: #fee2e2; color: #991b1b; }
         .message.hidden { display: none; }
+        /* Action buttons in table */
+        .btn-edit {
+            background: #f59e0b; color: #fff; border: none; padding: 5px 12px;
+            border-radius: 6px; font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; transition: background 0.15s; margin-right: 4px;
+        }
+        .btn-edit:hover { background: #d97706; }
+        .btn-retire {
+            background: #ef4444; color: #fff; border: none; padding: 5px 12px;
+            border-radius: 6px; font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; transition: background 0.15s;
+        }
+        .btn-retire:hover { background: #dc2626; }
+        .btn-retire:disabled, .btn-edit:disabled {
+            opacity: 0.5; cursor: not-allowed;
+        }
+        .tr-inactive { opacity: 0.55; }
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-content {
+            background: #fff; border-radius: 12px; padding: 28px; width: 90%;
+            max-width: 620px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 18px;
+        }
+        .modal-header h3 { color: #1e293b; margin: 0; }
+        .modal-close {
+            background: none; border: none; font-size: 1.5rem; cursor: pointer;
+            color: #94a3b8; padding: 0 4px;
+        }
+        .modal-close:hover { color: #475569; }
     </style>
 </head>
 <body>
@@ -144,6 +182,7 @@
                                     <th>Competences</th>
                                     <th>Statut</th>
                                     <th>Date</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="offresBody"></tbody>
@@ -238,10 +277,65 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modifier l'offre</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div id="editMessage" class="message hidden"></div>
+            <form class="offre-form" id="editOffreForm">
+                <input type="hidden" id="editOffreId">
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="editTitre">Titre *</label>
+                        <input type="text" id="editTitre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDomaine">Domaine *</label>
+                        <input type="text" id="editDomaine" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Description *</label>
+                    <textarea id="editDescription" required></textarea>
+                </div>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="editDuree">Duree *</label>
+                        <input type="text" id="editDuree" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLieu">Lieu *</label>
+                        <input type="text" id="editLieu" required>
+                    </div>
+                </div>
+                <div class="two-cols">
+                    <div class="form-group">
+                        <label for="editNiveau">Niveau requis *</label>
+                        <input type="text" id="editNiveau" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRemuneration">Remuneration (optionnel)</label>
+                        <input type="number" id="editRemuneration" min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Competences requises *</label>
+                    <div class="competence-grid" id="editCompetenceGrid"></div>
+                </div>
+                <button type="submit" class="btn-publish">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
     <script>
         var selectedCompetenceIds = [];
+        var editSelectedCompetenceIds = [];
+        var allCompetences = [];
 
         document.addEventListener('DOMContentLoaded', function () {
             checkAuth();
@@ -300,6 +394,7 @@
         async function loadCompetences() {
             try {
                 var competences = await apiFetch('/competences');
+                allCompetences = competences;
                 var grid = document.getElementById('competenceGrid');
                 grid.innerHTML = '';
                 competences.forEach(function(c) {
@@ -349,6 +444,15 @@
 
                 offres.forEach(function(o) {
                     var tr = document.createElement('tr');
+                    if (!o.active) tr.className = 'tr-inactive';
+                    var actionsHtml = '';
+                    if (o.active) {
+                        actionsHtml =
+                            '<button class="btn-edit" onclick="openEditModal(' + o.id + ')">Modifier</button>' +
+                            '<button class="btn-retire" onclick="retirerOffre(' + o.id + ', \'' + escapeHtml(o.titre).replace(/'/g, "\\'") + '\')">Retirer</button>';
+                    } else {
+                        actionsHtml = '<span style="color:#94a3b8; font-size:0.78rem;">Retiree</span>';
+                    }
                     tr.innerHTML =
                         '<td><strong>' + escapeHtml(o.titre) + '</strong></td>' +
                         '<td>' + escapeHtml(o.domaine) + '</td>' +
@@ -356,8 +460,9 @@
                         '<td>' + escapeHtml(o.duree) + '</td>' +
                         '<td>' + (o.competences || []).join(', ') + '</td>' +
                         '<td><span class="' + (o.active ? 'badge-active' : 'badge-inactive') + '">' +
-                            (o.active ? 'Active' : 'Inactive') + '</span></td>' +
-                        '<td>' + (o.datePublication ? o.datePublication.substring(0, 10) : '-') + '</td>';
+                            (o.active ? 'Active' : 'Retiree') + '</span></td>' +
+                        '<td>' + (o.datePublication ? o.datePublication.substring(0, 10) : '-') + '</td>' +
+                        '<td>' + actionsHtml + '</td>';
                     tbody.appendChild(tr);
                 });
             } catch (e) {
@@ -417,6 +522,113 @@
             var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // === Edit Modal ===
+        async function openEditModal(offreId) {
+            try {
+                var offre = await apiFetch('/offres/' + offreId);
+                document.getElementById('editOffreId').value = offre.id;
+                document.getElementById('editTitre').value = offre.titre;
+                document.getElementById('editDomaine').value = offre.domaine;
+                document.getElementById('editDescription').value = offre.description;
+                document.getElementById('editDuree').value = offre.duree;
+                document.getElementById('editLieu').value = offre.lieu;
+                document.getElementById('editNiveau').value = offre.niveauRequis;
+                document.getElementById('editRemuneration').value = offre.remuneration || '';
+
+                // Build competence chips for edit modal
+                editSelectedCompetenceIds = [];
+                var grid = document.getElementById('editCompetenceGrid');
+                grid.innerHTML = '';
+                allCompetences.forEach(function(c) {
+                    var chip = document.createElement('span');
+                    chip.className = 'competence-chip';
+                    chip.textContent = c.nom;
+                    chip.setAttribute('data-id', c.id);
+                    // Pre-select if offre has this competence
+                    if (offre.competences && offre.competences.indexOf(c.nom) !== -1) {
+                        chip.classList.add('selected');
+                        editSelectedCompetenceIds.push(c.id);
+                    }
+                    chip.addEventListener('click', function() {
+                        var id = parseInt(this.getAttribute('data-id'));
+                        if (this.classList.contains('selected')) {
+                            this.classList.remove('selected');
+                            editSelectedCompetenceIds = editSelectedCompetenceIds.filter(function(x) { return x !== id; });
+                        } else {
+                            this.classList.add('selected');
+                            editSelectedCompetenceIds.push(id);
+                        }
+                    });
+                    grid.appendChild(chip);
+                });
+
+                document.getElementById('editModal').classList.add('open');
+            } catch (e) {
+                alert('Erreur lors du chargement de l\'offre.');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('open');
+            document.getElementById('editMessage').classList.add('hidden');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        document.getElementById('editOffreForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (editSelectedCompetenceIds.length === 0) {
+                showMsg('editMessage', 'Veuillez selectionner au moins une competence.', 'error');
+                return;
+            }
+
+            var offreId = document.getElementById('editOffreId').value;
+            var remuneration = document.getElementById('editRemuneration').value;
+            var data = {
+                titre: document.getElementById('editTitre').value.trim(),
+                domaine: document.getElementById('editDomaine').value.trim(),
+                description: document.getElementById('editDescription').value.trim(),
+                duree: document.getElementById('editDuree').value.trim(),
+                lieu: document.getElementById('editLieu').value.trim(),
+                niveauRequis: document.getElementById('editNiveau').value.trim(),
+                competenceIds: editSelectedCompetenceIds,
+                remuneration: remuneration ? parseFloat(remuneration) : null
+            };
+
+            try {
+                await apiFetch('/offres/' + offreId, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+                closeEditModal();
+                showMsg('publishMessage', 'Offre modifiee avec succes !', 'success');
+                navigateTo('section-offres');
+                loadMesOffres();
+            } catch (err) {
+                showMsg('editMessage', err.message || 'Erreur lors de la modification.', 'error');
+            }
+        });
+
+        // === Retirer Offre ===
+        async function retirerOffre(offreId, titre) {
+            if (!confirm('Etes-vous sur de vouloir retirer l\'offre "' + titre + '" ?\nCette action la rendra inactive.')) {
+                return;
+            }
+
+            try {
+                await apiFetch('/offres/' + offreId, { method: 'DELETE' });
+                showMsg('publishMessage', 'Offre retiree avec succes.', 'success');
+                navigateTo('section-offres');
+                loadMesOffres();
+            } catch (err) {
+                alert(err.message || 'Erreur lors du retrait de l\'offre.');
+            }
         }
     </script>
 </body>

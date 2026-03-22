@@ -237,4 +237,124 @@ class OffreServiceTest {
         assertThatThrownBy(() -> offreService.getOffreById(99L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
+
+    // === updateOffre tests ===
+
+    @Test
+    void updateOffre_valid_returnsUpdatedResponse() {
+        Offre existingOffre = Offre.builder()
+                .id(100L).titre("Old Title").entreprise(testEntreprise)
+                .domaine("IT").description("old desc").duree("3m").lieu("Tunis")
+                .niveauRequis("L3").active(true).datePublication(LocalDateTime.now())
+                .competences(new HashSet<>(Set.of(compJava)))
+                .build();
+
+        when(offreRepository.findById(100L)).thenReturn(Optional.of(existingOffre));
+        when(entrepriseRepository.findByUserId(1L)).thenReturn(Optional.of(testEntreprise));
+        when(competenceRepository.findByIdIn(List.of(1L, 2L))).thenReturn(List.of(compJava, compSpring));
+        when(offreRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        OffreResponse response = offreService.updateOffre(1L, 100L, validRequest);
+
+        assertThat(response.getTitre()).isEqualTo("Developpeur Java");
+        assertThat(response.getDomaine()).isEqualTo("Developpement");
+        assertThat(response.getDescription()).isEqualTo("Stage en developpement Java/Spring");
+        assertThat(response.getCompetences()).containsExactlyInAnyOrder("Java", "Spring Boot");
+        verify(offreRepository).save(any());
+    }
+
+    @Test
+    void updateOffre_offreNonTrouvee_throws404() {
+        when(offreRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> offreService.updateOffre(1L, 99L, validRequest))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Offre non trouvee");
+    }
+
+    @Test
+    void updateOffre_notOwner_throws403() {
+        Entreprise otherEntreprise = Entreprise.builder()
+                .id(20L).user(User.builder().id(2L).build()).nom("OtherCorp").build();
+        Offre offre = Offre.builder()
+                .id(100L).titre("Title").entreprise(otherEntreprise)
+                .domaine("IT").description("desc").duree("3m").lieu("Tunis")
+                .niveauRequis("L3").active(true).datePublication(LocalDateTime.now())
+                .competences(new HashSet<>())
+                .build();
+
+        when(offreRepository.findById(100L)).thenReturn(Optional.of(offre));
+        when(entrepriseRepository.findByUserId(1L)).thenReturn(Optional.of(testEntreprise));
+
+        assertThatThrownBy(() -> offreService.updateOffre(1L, 100L, validRequest))
+                .isInstanceOf(ForbiddenException.class)
+                .hasMessage("Vous ne pouvez modifier que vos propres offres");
+    }
+
+    @Test
+    void updateOffre_competenceInvalide_throws404() {
+        Offre existingOffre = Offre.builder()
+                .id(100L).titre("Title").entreprise(testEntreprise)
+                .domaine("IT").description("desc").duree("3m").lieu("Tunis")
+                .niveauRequis("L3").active(true).datePublication(LocalDateTime.now())
+                .competences(new HashSet<>())
+                .build();
+
+        when(offreRepository.findById(100L)).thenReturn(Optional.of(existingOffre));
+        when(entrepriseRepository.findByUserId(1L)).thenReturn(Optional.of(testEntreprise));
+        when(competenceRepository.findByIdIn(List.of(1L, 2L))).thenReturn(List.of(compJava));
+
+        assertThatThrownBy(() -> offreService.updateOffre(1L, 100L, validRequest))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Une ou plusieurs competences n'existent pas");
+    }
+
+    // === deleteOffre tests ===
+
+    @Test
+    void deleteOffre_valid_setsActiveFalse() {
+        Offre offre = Offre.builder()
+                .id(100L).titre("Stage Java").entreprise(testEntreprise)
+                .domaine("IT").description("desc").duree("3m").lieu("Tunis")
+                .niveauRequis("L3").active(true).datePublication(LocalDateTime.now())
+                .competences(new HashSet<>())
+                .build();
+
+        when(offreRepository.findById(100L)).thenReturn(Optional.of(offre));
+        when(entrepriseRepository.findByUserId(1L)).thenReturn(Optional.of(testEntreprise));
+        when(offreRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        offreService.deleteOffre(1L, 100L);
+
+        assertThat(offre.isActive()).isFalse();
+        verify(offreRepository).save(offre);
+    }
+
+    @Test
+    void deleteOffre_offreNonTrouvee_throws404() {
+        when(offreRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> offreService.deleteOffre(1L, 99L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Offre non trouvee");
+    }
+
+    @Test
+    void deleteOffre_notOwner_throws403() {
+        Entreprise otherEntreprise = Entreprise.builder()
+                .id(20L).user(User.builder().id(2L).build()).nom("OtherCorp").build();
+        Offre offre = Offre.builder()
+                .id(100L).titre("Title").entreprise(otherEntreprise)
+                .domaine("IT").description("desc").duree("3m").lieu("Tunis")
+                .niveauRequis("L3").active(true).datePublication(LocalDateTime.now())
+                .competences(new HashSet<>())
+                .build();
+
+        when(offreRepository.findById(100L)).thenReturn(Optional.of(offre));
+        when(entrepriseRepository.findByUserId(1L)).thenReturn(Optional.of(testEntreprise));
+
+        assertThatThrownBy(() -> offreService.deleteOffre(1L, 100L))
+                .isInstanceOf(ForbiddenException.class)
+                .hasMessage("Vous ne pouvez modifier que vos propres offres");
+    }
 }

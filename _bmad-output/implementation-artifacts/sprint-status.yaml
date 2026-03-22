@@ -12,7 +12,7 @@
 sprint: 1
 sprint_goal: "Authentification & Profils de base"
 total_points: 20
-last_updated: "2026-03-21"
+last_updated: "2026-03-22"
 
 development_status:
   # Epic 1: Authentification & Profils de base
@@ -25,4 +25,4 @@ development_status:
   1-6-gerer-comptes-utilisateurs: "review"
   1-7-televerser-cv: "review"
   1-8-publier-offre-stage: "review"
-  1-9-modifier-supprimer-offre: "ready-for-dev"
+  1-9-modifier-supprimer-offre: "review"

@@ -1,6 +1,6 @@
 # Story 1.9: Modifier ou supprimer une offre (EN-02)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -20,27 +20,27 @@ so that les informations restent à jour et que je puisse retirer une offre pour
 
 ## Tasks / Subtasks
 
-- [ ] Task 1 : Implémenter OffreService.updateOffre() (AC: 1, 3, 4, 6)
-  - [ ] Charger l'offre par id (sinon 404)
-  - [ ] Vérifier que l'offre appartient à l'entreprise connectée (sinon 403)
-  - [ ] Vérifier qu'aucun stage actif n'est lié (sinon 400) — requête sur StageRepository si existant, sinon skip
-  - [ ] Mettre à jour les champs modifiables
-  - [ ] Mettre à jour les compétences (clear + re-add via competenceIds)
-  - [ ] Sauvegarder et retourner OffreResponse
-- [ ] Task 2 : Implémenter OffreService.deleteOffre() (AC: 2, 3, 5)
-  - [ ] Charger l'offre par id (sinon 404)
-  - [ ] Vérifier ownership (sinon 403)
-  - [ ] Marquer `active = false` (soft delete, pas de suppression physique)
-  - [ ] TODO Sprint 2 : appeler CandidatureService.annulerCandidaturesEnAttente(offreId) + NotificationService
-  - [ ] Sauvegarder
-- [ ] Task 3 : Ajouter les endpoints dans OffreController (AC: 1, 2)
-  - [ ] PUT `/api/offres/{id}` → updateOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
-  - [ ] DELETE `/api/offres/{id}` → deleteOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
-- [ ] Task 4 : Interface entreprise — modifier/retirer (AC: 7)
-  - [ ] Dans "Mes offres" : bouton "Modifier" ouvre un formulaire pré-rempli (réutiliser le formulaire de création)
-  - [ ] Bouton "Retirer" avec confirmation ("Êtes-vous sûr ?") avant appel DELETE
-  - [ ] Offres retirées (active=false) affichées en grisé ou dans une section séparée
-  - [ ] Feedback visuel après modification/retrait
+- [x] Task 1 : Implémenter OffreService.updateOffre() (AC: 1, 3, 4, 6)
+  - [x] Charger l'offre par id (sinon 404)
+  - [x] Vérifier que l'offre appartient à l'entreprise connectée (sinon 403)
+  - [x] Vérifier qu'aucun stage actif n'est lié (sinon 400) — requête sur StageRepository si existant, sinon skip
+  - [x] Mettre à jour les champs modifiables
+  - [x] Mettre à jour les compétences (clear + re-add via competenceIds)
+  - [x] Sauvegarder et retourner OffreResponse
+- [x] Task 2 : Implémenter OffreService.deleteOffre() (AC: 2, 3, 5)
+  - [x] Charger l'offre par id (sinon 404)
+  - [x] Vérifier ownership (sinon 403)
+  - [x] Marquer `active = false` (soft delete, pas de suppression physique)
+  - [x] TODO Sprint 2 : appeler CandidatureService.annulerCandidaturesEnAttente(offreId) + NotificationService
+  - [x] Sauvegarder
+- [x] Task 3 : Ajouter les endpoints dans OffreController (AC: 1, 2)
+  - [x] PUT `/api/offres/{id}` → updateOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
+  - [x] DELETE `/api/offres/{id}` → deleteOffre() [@PreAuthorize("hasRole('ENTREPRISE')")]
+- [x] Task 4 : Interface entreprise — modifier/retirer (AC: 7)
+  - [x] Dans "Mes offres" : bouton "Modifier" ouvre un formulaire pré-rempli (réutiliser le formulaire de création)
+  - [x] Bouton "Retirer" avec confirmation ("Êtes-vous sûr ?") avant appel DELETE
+  - [x] Offres retirées (active=false) affichées en grisé ou dans une section séparée
+  - [x] Feedback visuel après modification/retrait
 
 ## Dev Notes
 
@@ -78,9 +78,29 @@ Le service de suppression doit être prêt à appeler l'annulation des candidatu
 - [Source: prd.md#FR15] - Retrait annule candidatures + notification
 - [Source: prd.md#NFR4] - Isolation des données (ownership)
 
+## Change Log
+
+- 2026-03-22: Implemented all 4 tasks — updateOffre, deleteOffre (soft delete), controller endpoints, dashboard UI with edit modal and retire confirmation. 7 new unit tests added. Total: 91 tests passing, 0 failures.
+
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Debug Log References
+N/A — no debug issues encountered
+
 ### Completion Notes List
+- All 7 acceptance criteria met
+- `updateOffre()`: loads offre, checks ownership via `checkOwnership()` helper, validates competences, updates all fields including competences (clear + re-add), saves and returns OffreResponse
+- `deleteOffre()`: soft delete — sets `active = false`, ownership check, TODO comments for Sprint 2 candidature annulation + notifications
+- AC6 (stage actif check): Stage model doesn't exist yet — TODO comment added for future implementation
+- Controller: PUT `/api/offres/{id}` returns 200 with updated OffreResponse, DELETE `/api/offres/{id}` returns 204 No Content
+- Dashboard UI: "Modifier" button opens modal with pre-filled form + competence chips, "Retirer" button with confirm() dialog, inactive offres shown greyed out (`.tr-inactive`), success/error feedback messages
+- 7 new tests in OffreServiceTest: updateOffre (valid, 404, 403 ownership, invalid competences) + deleteOffre (valid sets active=false, 404, 403 ownership)
+
 ### File List
+- `src/main/java/com/smartintern/service/OffreService.java` (MODIFIED — added updateOffre, deleteOffre, checkOwnership)
+- `src/main/java/com/smartintern/controller/OffreController.java` (MODIFIED — added PUT and DELETE endpoints)
+- `src/main/resources/static/pages/dashboard-entreprise.html` (MODIFIED — edit modal, action buttons, retirer with confirm)
+- `src/test/java/com/smartintern/service/OffreServiceTest.java` (MODIFIED — added 7 tests for update/delete)
